@@ -1,0 +1,9 @@
+1- CanalEntrada e LeArquivo - Pedro
+
+2- ScannerSimbolo - Ruan
+
+3- Memoria e main - Eduardo
+
+4- Memoria e Variavel - Aline 
+
+5- ValidaArgumento - Luiz
