@@ -2,8 +2,12 @@
 
 2- ScannerSimbolo - Ruan
 
-3- Memoria e main - Eduardo
+3- Atribuição, AnalisaConteudoExpressao, Associar InterpretadorExpressoes, Main - Eduardo
 
-4- Memoria e Variavel - Aline 
+4- Memoria, Variavel e Atribuição - Aline
+
+- Variavel : Classe muito simples que foi necessário apenas usar set e get sem nenhuma dificuldade;
+- Memoria : Classe muito simples que foi necessário apenas adicionar e pesquisar(transformando HashSet em array para facilitar) variaval no na memória, sem nenhuma dificuldade;
+- Atribuição: Classe em comum com Eduardo Cotta em que apenas separei a expressao em variavel e conteudo e iniciei a ideia de obter tipo.  
 
 5- ValidaArgumento - Luiz
