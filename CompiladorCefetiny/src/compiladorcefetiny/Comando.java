@@ -4,8 +4,7 @@ package compiladorcefetiny;
  *
  * @author Aline, Eduardo Cotta, Luiz, Pedro Lucas e Ruan
  */
-public interface CanalEntrada {
-    
-    public char get();
-    public void unget();
+public interface Comando {
+
+    public void execute();
 }

@@ -1,11 +1,14 @@
+
 package compiladorcefetiny;
+
+import java.util.ArrayList;
 
 /**
  *
  * @author Aline, Eduardo Cotta, Luiz, Pedro Lucas e Ruan
  */
-public interface CanalEntrada {
+public class ListaExecucao {
     
-    public char get();
-    public void unget();
+   ArrayList<Comando> ListaComandos ;
+  
 }
