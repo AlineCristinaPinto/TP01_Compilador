@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/aluno/Desktop/TP01_Compilador-master/CompiladorCefetiny/src/compiladorcefetiny/Expressao.java</file>
-            <file>file:/C:/Users/aluno/Desktop/TP01_Compilador-master/CompiladorCefetiny/src/compiladorcefetiny/ComandoAtribuicao.java</file>
-            <file>file:/C:/Users/aluno/Desktop/TP01_Compilador-master/CompiladorCefetiny/src/compiladorcefetiny/ListaExecucao.java</file>
-            <file>file:/C:/Users/aluno/Desktop/TP01_Compilador-master/CompiladorCefetiny/src/compiladorcefetiny/ValidaSemantica.java</file>
+            <file>file:/D:/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/ComandoAtribuicao.java</file>
+            <file>file:/D:/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/Memoria.java</file>
+            <file>file:/D:/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/CompiladorCefetiny.java</file>
+            <file>file:/D:/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/ComandoIf.java</file>
         </group>
     </open-files>
 </project-private>

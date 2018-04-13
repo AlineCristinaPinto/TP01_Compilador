@@ -8,6 +8,14 @@ public class Variavel {
     private String type;
     private Object value;
 
+    public Variavel(){}
+    
+    public Variavel(String name, String type, Object value) {
+        this.name = name;
+        this.type = type;
+        this.value = value;
+    }
+    
     public void setName(String name) {
         this.name = name;
     }
