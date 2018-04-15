@@ -1,19 +1,22 @@
 package compiladorcefetiny;
-
-import java.util.Scanner;
-
 /**
  *
  * @author Aline, Eduardo Cotta, Luiz, Pedro Lucas e Ruan
  */
+ // C:\Users\aluno\Desktop\compila.txt
 public class CompiladorCefetiny {
 
     public static void main(String[] args) {
-        Scanner ent = new Scanner (System.in);
+        
+        LeArquivo arq = new LeArquivo();
+        
+        arq.fileToString();
+        ScannerSimbolo scanner = new ScannerSimbolo(arq);
+        scanner.analisaCaractere();
         //Atribuicao a = new Atribuicao ();
         //a.realizaAtribuicao("aline:=\"eduardo\"");
         //a.realizaAtribuicao("aline:=10");
-        
+       
         /*Variavel v = new Variavel();
         v.setName("aaa");
         v.setType("String");
@@ -37,8 +40,7 @@ public class CompiladorCefetiny {
             System.out.println("Dentro");
         } else {
             System.out.println("Fora");
- 
         }*/
-     
     }
+    
 }

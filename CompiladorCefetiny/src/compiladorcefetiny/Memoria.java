@@ -9,7 +9,7 @@ import java.util.HashSet;
 public class Memoria {
     private static HashSet<Variavel> pilhaMem = new HashSet<Variavel>();
     
-    public static Boolean searchVariableExists (String nomeVariavel){
+    public static Boolean Search (String nomeVariavel){
         
         Variavel[] vetorPilhaMem = new Variavel[pilhaMem.size()];
         pilhaMem.toArray(vetorPilhaMem);
@@ -23,22 +23,7 @@ public class Memoria {
         return false;
     }
     
-    public static Variavel searchVariable (String nomeVariavel){
-        
-        Variavel[] vetorPilhaMem = new Variavel[pilhaMem.size()];
-        pilhaMem.toArray(vetorPilhaMem);
-        Variavel var = new Variavel();
-        
-        for( int i = 0; i < vetorPilhaMem.length; i++ ){
-            if(vetorPilhaMem[i].getName().equals(nomeVariavel)){
-                var = vetorPilhaMem[i];
-            }
-        }
-        
-        return var; 
-    }
-    
-    public static void insert (Variavel variavel){
+    public static void Insert (Variavel variavel){
         pilhaMem.add(variavel);
     }
     
