@@ -54,11 +54,11 @@ public class MontaComandos {
 
         return new ComandoPrint(expressao);
     }
-    private ComandoPrint println(String comando) {
+    private ComandoPrintln println(String comando) {
         String expressao = "";
 
         expressao = comando.substring((comando.indexOf("(") + 1), (comando.length() - 1));
 
-        return new ComandoPrint(expressao);
+        return new ComandoPrintln(expressao);
     }
 }
