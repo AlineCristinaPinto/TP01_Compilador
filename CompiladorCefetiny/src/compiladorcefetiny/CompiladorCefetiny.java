@@ -1,4 +1,7 @@
 package compiladorcefetiny;
+
+import java.util.Scanner;
+
 /**
  *
  * @author Aline, Eduardo Cotta, Luiz, Pedro Lucas e Ruan
@@ -6,6 +9,7 @@ package compiladorcefetiny;
 public class CompiladorCefetiny {
 
     public static void main(String[] args) {
+        Scanner ent = new Scanner (System.in);
         //Atribuicao a = new Atribuicao ();
         //a.realizaAtribuicao("aline:=\"eduardo\"");
         //a.realizaAtribuicao("aline:=10");
@@ -33,7 +37,8 @@ public class CompiladorCefetiny {
             System.out.println("Dentro");
         } else {
             System.out.println("Fora");
+ 
         }*/
+       
     }
-    
 }
