@@ -33,7 +33,7 @@ public class LeArquivo implements CanalEntrada {
             do {
                 linha = leArq.readLine();
                 if (linha != null) {
-                    textoArquivo += " " + linha;
+                    textoArquivo += linha + "\n";
                 }
             } while (linha != null);
 
