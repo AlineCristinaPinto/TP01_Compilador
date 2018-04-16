@@ -19,6 +19,8 @@ public class MontaComandos {
                 ListaExecucao.preencheLista((Comando) print(comando.getStringComando()));
             case "println":
                 ListaExecucao.preencheLista((Comando) println(comando.getStringComando()));
+            case "readint":
+                ListaExecucao.preencheLista((Comando) readint(comando.getStringComando()));
         }
     }
 
@@ -54,11 +56,20 @@ public class MontaComandos {
 
         return new ComandoPrint(expressao);
     }
+
     private ComandoPrintln println(String comando) {
         String expressao = "";
 
         expressao = comando.substring((comando.indexOf("(") + 1), (comando.length() - 1));
 
         return new ComandoPrintln(expressao);
+    }
+
+    private ComandoReadint readint(String comando) {
+        String variavel = "";
+
+        variavel = comando.substring((comando.indexOf("(") + 1), (comando.length() - 1));
+
+        return new ComandoReadint(variavel);
     }
 }
