@@ -64,7 +64,7 @@ public class ComandoPrint implements Comando {
                 impressao += vetMensagem[i];
             }
 
-            System.out.println(impressao);
+            System.out.print(impressao);
         } else {
 
             String impressao = print;
@@ -82,7 +82,7 @@ public class ComandoPrint implements Comando {
                 impressao = text;
             }
 
-            System.out.println(impressao);
+            System.out.print(impressao);
         }
     }
 
