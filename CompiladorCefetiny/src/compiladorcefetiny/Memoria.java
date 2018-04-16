@@ -42,4 +42,17 @@ public class Memoria {
         pilhaMem.add(variavel);
     }
     
+    public static void update (Variavel variavel){
+        Variavel[] vetorPilhaMem = new Variavel[pilhaMem.size()];
+        pilhaMem.toArray(vetorPilhaMem);
+        
+        for( int i = 0; i < vetorPilhaMem.length; i++ ){
+            if(vetorPilhaMem[i].getName().equals(variavel.getName())){
+                vetorPilhaMem[i].setType(variavel.getType());
+                vetorPilhaMem[i].setValue(variavel.getValue());
+            }
+        }
+        
+    }
+    
 }

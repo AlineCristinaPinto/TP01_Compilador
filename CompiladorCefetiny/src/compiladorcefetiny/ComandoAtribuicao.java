@@ -26,18 +26,26 @@ public class ComandoAtribuicao implements Comando {
                 case "int":
                     variavelTemp.setType(tipo);
                     variavelTemp.setValue(Integer.parseInt(conteudo));
+                    // Atualizando Variavel
+                    Memoria.update(variavelTemp);
                     break;
                 case "double":
                     variavelTemp.setType(tipo);
                     variavelTemp.setValue(Double.parseDouble(conteudo));
+                    // Atualizando Variavel
+                    Memoria.update(variavelTemp);
                     break;
                 case "string":
                     variavelTemp.setType(tipo);
                     variavelTemp.setValue(conteudo);
+                    // Atualizando Variavel
+                    Memoria.update(variavelTemp);
                     break;
                 case "boolean":
                     variavelTemp.setType(tipo);
                     variavelTemp.setValue( Boolean.parseBoolean(conteudo));
+                    // Atualizando Variavel
+                    Memoria.update(variavelTemp);
                     break;
                 case "expressao":
                     //conteudo = recebeExpressao(conteudo);
@@ -45,12 +53,20 @@ public class ComandoAtribuicao implements Comando {
                     variavelTemp.setType(tipo);
                     if(tipo.equals("int")){
                         variavelTemp.setValue(Integer.parseInt(conteudo));
+                        // Atualizando Variavel
+                        Memoria.update(variavelTemp);
                     } else if (tipo.equals("double")){
                         variavelTemp.setValue(Double.parseDouble(conteudo));
+                        // Atualizando Variavel
+                        Memoria.update(variavelTemp);
                     } else if (tipo.equals("string")){
                         variavelTemp.setValue(conteudo);
+                        // Atualizando Variavel
+                        Memoria.update(variavelTemp);
                     } else if (tipo.equals("boolean")){
                         variavelTemp.setValue( Boolean.parseBoolean(conteudo));
+                        // Atualizando Variavel
+                        Memoria.update(variavelTemp);
                     }                    
                     break;
                 default:
@@ -64,27 +80,43 @@ public class ComandoAtribuicao implements Comando {
             switch (tipo) {
                 case "int":
                     novaVariavelTemp = new Variavel(variavel, tipo, Integer.parseInt(conteudo));
+                    // Adicionando nova Variavel
+                    Memoria.insert(novaVariavelTemp);
                     break;
                 case "double":
                     novaVariavelTemp = new Variavel(variavel, tipo, Double.parseDouble(conteudo));
+                    // Adicionando nova Variavel
+                    Memoria.insert(novaVariavelTemp);
                     break;
                 case "string":
                     novaVariavelTemp = new Variavel(variavel, tipo, conteudo);
+                    // Adicionando nova Variavel
+                    Memoria.insert(novaVariavelTemp);
                     break;
                 case "boolean":
                     novaVariavelTemp = new Variavel(variavel, tipo, Boolean.parseBoolean(conteudo));
+                    // Adicionando nova Variavel
+                    Memoria.insert(novaVariavelTemp);
                     break;
                 case "expressao":
                     //conteudo = recebeExpressao(conteudo);
                     tipo = descobreTipoVariavel(conteudo);
                     if(tipo.equals("int")){
                         novaVariavelTemp = new Variavel(variavel, tipo, Integer.parseInt(conteudo));
+                        // Adicionando nova Variavel
+                        Memoria.insert(novaVariavelTemp);
                     } else if (tipo.equals("double")){
                         novaVariavelTemp = new Variavel(variavel, tipo, Double.parseDouble(conteudo));
+                        // Adicionando nova Variavel
+                        Memoria.insert(novaVariavelTemp);
                     } else if (tipo.equals("string")){
                         novaVariavelTemp = new Variavel(variavel, tipo, conteudo);
+                        // Adicionando nova Variavel
+                        Memoria.insert(novaVariavelTemp);
                     } else if (tipo.equals("boolean")){
                         novaVariavelTemp = new Variavel(variavel, tipo, Boolean.parseBoolean(conteudo));
+                        // Adicionando nova Variavel
+                        Memoria.insert(novaVariavelTemp);
                     }   
                     break;
                 default:
