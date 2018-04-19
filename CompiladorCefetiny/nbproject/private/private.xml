@@ -3,21 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/Pedro%20H/Desktop/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/ComandoAtribuicao.java</file>
-            <file>file:/C:/Users/Pedro%20H/Desktop/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/ComandoReadint.java</file>
-            <file>file:/C:/Users/Pedro%20H/Desktop/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/LeArquivo.java</file>
             <file>file:/C:/Users/Pedro%20H/Desktop/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/MontaComandos.java</file>
-            <file>file:/C:/Users/Pedro%20H/Desktop/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/ListaExecucao.java</file>
-            <file>file:/C:/Users/Pedro%20H/Desktop/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/ComandoPrintln.java</file>
-            <file>file:/C:/Users/Pedro%20H/Desktop/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/ComandoPrint.java</file>
-=======
-            <file>file:/home/aline/Área%20de%20Trabalho/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/Memoria.java</file>
-            <file>file:/home/aline/Área%20de%20Trabalho/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/ComandoPrint.java</file>
-            <file>file:/home/aline/Área%20de%20Trabalho/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/CompiladorCefetiny.java</file>
-            <file>file:/home/aline/Área%20de%20Trabalho/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/ComandoAtribuicao.java</file>
-            <file>file:/home/aline/Área%20de%20Trabalho/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/ComandoReadint.java</file>
->>>>>>> c86db82ff6d739cdcbd0e548fcf4e8a2ec4a2ddf
+            <file>file:/C:/Users/Pedro%20H/Desktop/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/PseudoComando.java</file>
         </group>
     </open-files>
 </project-private>
