@@ -8,4 +8,5 @@ public interface CanalEntrada {
     
     public char get();
     public void unget();
+    public void zeraContador();
 }
