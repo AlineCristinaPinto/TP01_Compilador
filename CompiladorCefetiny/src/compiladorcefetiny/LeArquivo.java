@@ -57,5 +57,4 @@ public class LeArquivo implements CanalEntrada {
     public void unget() {
         contadorCaractere--;
     }
-
 }

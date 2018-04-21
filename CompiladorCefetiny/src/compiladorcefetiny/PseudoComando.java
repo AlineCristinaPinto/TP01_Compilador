@@ -12,7 +12,6 @@ public class PseudoComando {
     private String stringComando;
     private String tipoComando;
     private boolean foiPreenchido;
-    private boolean fimComandos;
 
     public PseudoComando(List<PseudoComando> pseudoLista, String stringComando, String tipoComando, boolean foiPreenchido) {
         this.pseudoLista = pseudoLista;
@@ -36,9 +35,4 @@ public class PseudoComando {
     public boolean isPreenchido() {
         return foiPreenchido;
     }
-
-    public boolean isFim() {
-        return fimComandos;
-    }
-
 }
