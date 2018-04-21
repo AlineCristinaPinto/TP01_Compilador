@@ -5,6 +5,10 @@ package compiladorcefetiny;
  */
 public class ComandoIf implements Comando{
     private String expressao;
+
+    public ComandoIf(String expressao, PseudoListaExecucao conteudo) {
+        
+    }
     
     @Override
     public void execute() {

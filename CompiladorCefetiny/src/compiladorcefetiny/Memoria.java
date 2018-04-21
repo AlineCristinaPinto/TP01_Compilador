@@ -6,6 +6,7 @@ import java.util.HashSet;
  *
  * @author Aline, Eduardo Cotta, Luiz, Pedro Lucas e Ruan
  */
+
 public class Memoria {
     private static HashSet<Variavel> pilhaMem = new HashSet<Variavel>();
     
@@ -31,7 +32,9 @@ public class Memoria {
         
         for( int i = 0; i < vetorPilhaMem.length; i++ ){
             if(vetorPilhaMem[i].getName().equals(nomeVariavel)){
-                var = vetorPilhaMem[i];
+                var.setValue( vetorPilhaMem[i].getValue() );
+                var.setType( vetorPilhaMem[i].getType() );
+                var.setName( vetorPilhaMem[i].getName() );
             }
         }
         
@@ -40,6 +43,19 @@ public class Memoria {
     
     public static void insert (Variavel variavel){
         pilhaMem.add(variavel);
+    }
+    
+    public static void update (Variavel variavel){
+        Variavel[] vetorPilhaMem = new Variavel[pilhaMem.size()];
+        pilhaMem.toArray(vetorPilhaMem);
+        
+        for( int i = 0; i < vetorPilhaMem.length; i++ ){
+            if(vetorPilhaMem[i].getName().equals(variavel.getName())){
+                vetorPilhaMem[i].setType(variavel.getType());
+                vetorPilhaMem[i].setValue(variavel.getValue());
+            }
+        }
+        
     }
     
 }
