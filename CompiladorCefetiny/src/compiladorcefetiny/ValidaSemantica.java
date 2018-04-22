@@ -5,14 +5,18 @@ package compiladorcefetiny;
  * @author Aline, Eduardo Cotta, Luiz, Pedro Lucas e Ruan
  */
 public class ValidaSemantica {
+    //construtor privado para que a classe nao seja instanciada
+    private ValidaSemantica(){
+        
+    }
     
     //expressaoTipos armazena a expressao porem alterando os valores por um
     //identificador de seu tipo correspondente. b = booleano, n = numerico, s = string,
     //r( = sqrt(, i( = not(. Os operadores nao sao alterados.
-    private String expressaoTipos = "";
     
-    public boolean validaExpressao(String expressao){
+    public static boolean validaExpressao(String expressao){
         expressao = expressao.trim();
+        String expressaoTipos = "";
         
         if(expressao.length() > 0){
             //tipoEsperado e' utilizada para alternar entre a leitura de operandos ou operadores.
@@ -158,14 +162,14 @@ public class ValidaSemantica {
         }
     }
     
-    private boolean resolveExpTipos(String expressao){
+    private static boolean resolveExpTipos(String expressao){
         
         expressao = substituiOp(expressao);
         
         return expressao.equals("b") || expressao.equals("n") || expressao.equals("s");
     }
     
-    private String substituiOp(String expressao){
+    private static String substituiOp(String expressao){
         while(expressao.contains("n+n") || expressao.contains("n-n") ||
                 expressao.contains("n*n") || expressao.contains("n/n") ||
                 expressao.contains("n^n") || expressao.contains("nmodn") || 
@@ -287,7 +291,7 @@ public class ValidaSemantica {
     //Todos os metodos encontraxxx procuram por um termo e retornam a ultima 
     //posicao do termo encontrado. Caso nao encontre o que procura, retorna -1, 
     //pois sempre que achar ira' retornar um valor positivo.
-    private int encontraSqrt(String expressao){
+    private static int encontraSqrt(String expressao){
         //regexSqrt: (sqrt\()
         
         if(expressao.length() >= 5){
@@ -306,7 +310,7 @@ public class ValidaSemantica {
         return -1;
     }
     
-    private int encontraNot(String expressao){
+    private static int encontraNot(String expressao){
         //regexNot: (not)\(
         
         if(expressao.length() >= 4){
@@ -325,7 +329,7 @@ public class ValidaSemantica {
         return -1;
     }
     
-    private int encontraConstanteNumerica(String expressao){
+    private static int encontraConstanteNumerica(String expressao){
         //regexConstanteNumerica: (regexDigito)+|((regexDigito)*\.(regexDigito)+)
         //System.out.println(expressao);
         boolean encontrouPonto = false;
@@ -365,7 +369,7 @@ public class ValidaSemantica {
         return -1;
     }
     
-    private int encontraVariavel(String expressao){
+    private static int encontraVariavel(String expressao){
         //regexVariavel: ^regexLetra(regexLetra|regexDigito)*
         //regexMulop: (div|mod|and)
         
@@ -386,7 +390,7 @@ public class ValidaSemantica {
         return -1;
     }
     
-    private int encontraOperadoresNumericos(String expressao){
+    private static int encontraOperadoresNumericos(String expressao){
         //regexOpNumerico: (\+|-|\*|/|mod|div)
         
         if(expressao.charAt(0) == '+' || expressao.charAt(0) == '-' ||
@@ -408,7 +412,7 @@ public class ValidaSemantica {
         return -1;
     }
     
-    private int encontraOperadoresLogicos(String expressao){
+    private static int encontraOperadoresLogicos(String expressao){
         
         if(expressao.length() > 1){
             if(expressao.length() >= 3 && expressao.substring(0, 3).equals("and")){
@@ -431,7 +435,7 @@ public class ValidaSemantica {
         return -1;
     }
     
-    private int encontraOperadoresRelacionais(String expressao){
+    private static int encontraOperadoresRelacionais(String expressao){
         //regexOpRelacional: (<|>|<=|>=|<>|=)
         
         if(expressao.length() > 0){
@@ -450,7 +454,7 @@ public class ValidaSemantica {
         return -1;
     }
     
-    private int encontraString(String expressao){
+    private static int encontraString(String expressao){
         //regexString: ^\"(regexLetra|regexDigito)*\"$
         
         if(expressao.charAt(0) == '"'){
@@ -468,7 +472,7 @@ public class ValidaSemantica {
         return -1;
     }
     
-    private int encontraBooleano(String expressao){
+    private static int encontraBooleano(String expressao){
         //regexBooleano: (true|false);
         
         if(expressao.length() >= 5){
@@ -486,7 +490,7 @@ public class ValidaSemantica {
         return -1;
     }
     
-    private int encontraAbreParenteses(String expressao){
+    private static int encontraAbreParenteses(String expressao){
         //regexAbreParenteses: (\()
         
         if(expressao.charAt(0) == '('){
@@ -496,7 +500,7 @@ public class ValidaSemantica {
         }
     }
     
-    private int encontraFechaParenteses(String expressao){
+    private static int encontraFechaParenteses(String expressao){
         //regexFechaParenteses: (\))
         
         if(expressao.charAt(0) == ')'){
@@ -506,7 +510,7 @@ public class ValidaSemantica {
         }
     }
     
-    private int encontraEspaco(String expressao){
+    private static int encontraEspaco(String expressao){
         //regex: ( )+
         
         if(expressao.charAt(0) != ' '){
@@ -522,11 +526,11 @@ public class ValidaSemantica {
         return -1;
     }
     
-    private boolean encontraLetra(char caractere){
+    private static boolean encontraLetra(char caractere){
         return caractere >= 97 && caractere <= 122;
     }
     
-    private boolean encontraDigito(char caractere){
+    private static boolean encontraDigito(char caractere){
         return caractere >= 48 && caractere <= 57;
     }
     
