@@ -14,7 +14,7 @@ public class ValidaSemantica {
     //identificador de seu tipo correspondente. b = booleano, n = numerico, s = string,
     //r( = sqrt(, i( = not(. Os operadores nao sao alterados.
     
-    public static boolean validaExpressao(String expressao){
+    public static String validaExpressao(String expressao){
         expressao = expressao.trim();
         String expressaoTipos = "";
         
@@ -88,7 +88,7 @@ public class ValidaSemantica {
                         }else {
                             //throws exception variavel nao encontrada
                             //return "ERRO: variavel nao encontrada";
-                            return false;
+                            return "erro";
                         }
 
                     }else if(encontraString(expressao.substring(fimUltimoTermo)) > 0){
@@ -104,7 +104,7 @@ public class ValidaSemantica {
                     }else{
                         //throws exception
                         //return "ERRO: expressao invalida";
-                        return false;
+                        return "erro";
                     }
                 //se tipoEsperado == 1 verifica se o proximo termo lido sera' um operador
                 }else if(tipoEsperado == 1){
@@ -135,7 +135,7 @@ public class ValidaSemantica {
                         if(contaFechaParenteses < 0){
                             //throws exception fecha parenteses a mais
                             //return "ERRO: fecha parenteses a mais";
-                            return false;
+                            return "erro";
                         }
                         tipoEsperado = 1;
                         expressaoTipos += ")";
@@ -143,7 +143,7 @@ public class ValidaSemantica {
                     }else{
                         //throws exception
                         //return "ERRO: expressao invalida";
-                        return false;
+                        return "erro";
                     }
                 }
                 i = fimUltimoTermo;
@@ -152,21 +152,31 @@ public class ValidaSemantica {
             if(contaFechaParenteses > 0){
                 //throws exception
                 //return "ERRO: parenteses nao foi fechado";
-                return false;
+                return "erro";
             }
 
             return resolveExpTipos(expressaoTipos);
             
         }else{
-            return false;
+            //throws exception expressao nula
+            return "erro";
         }
     }
     
-    private static boolean resolveExpTipos(String expressao){
+    private static String resolveExpTipos(String expressao){
         
         expressao = substituiOp(expressao);
         
-        return expressao.equals("b") || expressao.equals("n") || expressao.equals("s");
+        switch (expressao) {
+            case "b":
+                return "boolean";
+            case "n":
+                return "numeric";
+            case "s":
+                return "string";
+            default:
+                return "erro";
+        }
     }
     
     private static String substituiOp(String expressao){
