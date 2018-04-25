@@ -7,6 +7,10 @@ package compiladorcefetiny;
  */
 public class ComandoFor implements Comando{
 
+    public ComandoFor(String comandoAtribuicao, String expressao,PseudoListaExecucao listaComandos) {
+        
+    }
+    
     @Override
     public void execute() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
