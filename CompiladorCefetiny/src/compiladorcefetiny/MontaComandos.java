@@ -173,6 +173,7 @@ public class MontaComandos {
             PseudoListaExecucao listaFor = new PseudoListaExecucao();
             String[] comandoSeparado = comando.getStringComando().split(" ");
             String comandoAtribuicao = comandoSeparado[1];
+            String tipoOperacao = comandoSeparado[2];
             String expressao = comandoSeparado[3];
 
             if (comando.isPreenchido()) {
@@ -181,11 +182,12 @@ public class MontaComandos {
                 }
             }
 
-            return new ComandoFor(comandoAtribuicao, expressao, listaFor);
+            return new ComandoFor(comandoAtribuicao, tipoOperacao, expressao, listaFor);
         } else {
             PseudoListaExecucao listaForInterno = new PseudoListaExecucao();
             String[] comandoSeparado = comando.getStringComando().split(" ");
             String comandoAtribuicao = comandoSeparado[1];
+            String tipoOperacao = comandoSeparado[2];
             String expressao = comandoSeparado[3];
 
             if (comando.isPreenchido()) {
@@ -194,7 +196,7 @@ public class MontaComandos {
                 }
             }
 
-            return new ComandoFor(comandoAtribuicao, expressao, listaForInterno);
+            return new ComandoFor(comandoAtribuicao, tipoOperacao, expressao, listaForInterno);
         }
     }
 }

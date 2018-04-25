@@ -16,55 +16,56 @@ public class ComandoAtribuicao implements Comando {
     @Override
     public void execute() {
         String tipo = "";
+        String conteudoTemp = conteudo;
         // Variavel já existe        
         if (Memoria.searchVariableExists(variavel)) {
-            Variavel variavelTemp;
+            Variavel variavelTemp;           
             variavelTemp = Memoria.searchVariable(variavel);
-            tipo = descobreTipoVariavel(conteudo);
+            tipo = descobreTipoVariavel(conteudoTemp);
             
             switch (tipo) {
                 case "int":
                     variavelTemp.setType(tipo);
-                    variavelTemp.setValue(Integer.parseInt(conteudo));
+                    variavelTemp.setValue(Integer.parseInt(conteudoTemp));
                     // Atualizando Variavel
                     Memoria.update(variavelTemp);
                     break;
                 case "double":
                     variavelTemp.setType(tipo);
-                    variavelTemp.setValue(Double.parseDouble(conteudo));
+                    variavelTemp.setValue(Double.parseDouble(conteudoTemp));
                     // Atualizando Variavel
                     Memoria.update(variavelTemp);
                     break;
                 case "string":
                     variavelTemp.setType(tipo);
-                    variavelTemp.setValue(conteudo);
+                    variavelTemp.setValue(conteudoTemp);
                     // Atualizando Variavel
                     Memoria.update(variavelTemp);
                     break;
                 case "boolean":
                     variavelTemp.setType(tipo);
-                    variavelTemp.setValue( Boolean.parseBoolean(conteudo));
+                    variavelTemp.setValue( Boolean.parseBoolean(conteudoTemp));
                     // Atualizando Variavel
                     Memoria.update(variavelTemp);
                     break;
                 case "expressao":
-                    //conteudo = recebeExpressao(conteudo);
-                    tipo = descobreTipoVariavel(conteudo);
+                    conteudoTemp = Expressao.Exp.calcula(conteudo);
+                    tipo = descobreTipoVariavel(conteudoTemp);
                     variavelTemp.setType(tipo);
                     if(tipo.equals("int")){
-                        variavelTemp.setValue(Integer.parseInt(conteudo));
+                        variavelTemp.setValue(Integer.parseInt(conteudoTemp));
                         // Atualizando Variavel
                         Memoria.update(variavelTemp);
                     } else if (tipo.equals("double")){
-                        variavelTemp.setValue(Double.parseDouble(conteudo));
+                        variavelTemp.setValue(Double.parseDouble(conteudoTemp));
                         // Atualizando Variavel
                         Memoria.update(variavelTemp);
                     } else if (tipo.equals("string")){
-                        variavelTemp.setValue(conteudo);
+                        variavelTemp.setValue(conteudoTemp);
                         // Atualizando Variavel
                         Memoria.update(variavelTemp);
                     } else if (tipo.equals("boolean")){
-                        variavelTemp.setValue( Boolean.parseBoolean(conteudo));
+                        variavelTemp.setValue( Boolean.parseBoolean(conteudoTemp));
                         // Atualizando Variavel
                         Memoria.update(variavelTemp);
                     }                    
@@ -75,46 +76,46 @@ public class ComandoAtribuicao implements Comando {
         } else {
             // Criando Variável
             Variavel novaVariavelTemp;
-            tipo = descobreTipoVariavel(conteudo);
+            tipo = descobreTipoVariavel(conteudoTemp);
 
             switch (tipo) {
                 case "int":
-                    novaVariavelTemp = new Variavel(variavel, tipo, Integer.parseInt(conteudo));
+                    novaVariavelTemp = new Variavel(variavel, tipo, Integer.parseInt(conteudoTemp));
                     // Adicionando nova Variavel
                     Memoria.insert(novaVariavelTemp);
                     break;
                 case "double":
-                    novaVariavelTemp = new Variavel(variavel, tipo, Double.parseDouble(conteudo));
+                    novaVariavelTemp = new Variavel(variavel, tipo, Double.parseDouble(conteudoTemp));
                     // Adicionando nova Variavel
                     Memoria.insert(novaVariavelTemp);
                     break;
                 case "string":
-                    novaVariavelTemp = new Variavel(variavel, tipo, conteudo);
+                    novaVariavelTemp = new Variavel(variavel, tipo, conteudoTemp);
                     // Adicionando nova Variavel
                     Memoria.insert(novaVariavelTemp);
                     break;
                 case "boolean":
-                    novaVariavelTemp = new Variavel(variavel, tipo, Boolean.parseBoolean(conteudo));
+                    novaVariavelTemp = new Variavel(variavel, tipo, Boolean.parseBoolean(conteudoTemp));
                     // Adicionando nova Variavel
                     Memoria.insert(novaVariavelTemp);
                     break;
                 case "expressao":
-                    //conteudo = recebeExpressao(conteudo);
-                    tipo = descobreTipoVariavel(conteudo);
+                    conteudoTemp = Expressao.Exp.calcula(conteudo);
+                    tipo = descobreTipoVariavel(conteudoTemp);
                     if(tipo.equals("int")){
-                        novaVariavelTemp = new Variavel(variavel, tipo, Integer.parseInt(conteudo));
+                        novaVariavelTemp = new Variavel(variavel, tipo, Integer.parseInt(conteudoTemp));
                         // Adicionando nova Variavel
                         Memoria.insert(novaVariavelTemp);
                     } else if (tipo.equals("double")){
-                        novaVariavelTemp = new Variavel(variavel, tipo, Double.parseDouble(conteudo));
+                        novaVariavelTemp = new Variavel(variavel, tipo, Double.parseDouble(conteudoTemp));
                         // Adicionando nova Variavel
                         Memoria.insert(novaVariavelTemp);
                     } else if (tipo.equals("string")){
-                        novaVariavelTemp = new Variavel(variavel, tipo, conteudo);
+                        novaVariavelTemp = new Variavel(variavel, tipo, conteudoTemp);
                         // Adicionando nova Variavel
                         Memoria.insert(novaVariavelTemp);
                     } else if (tipo.equals("boolean")){
-                        novaVariavelTemp = new Variavel(variavel, tipo, Boolean.parseBoolean(conteudo));
+                        novaVariavelTemp = new Variavel(variavel, tipo, Boolean.parseBoolean(conteudoTemp));
                         // Adicionando nova Variavel
                         Memoria.insert(novaVariavelTemp);
                     }   

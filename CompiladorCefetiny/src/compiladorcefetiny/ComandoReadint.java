@@ -45,8 +45,5 @@ public class ComandoReadint implements Comando {
             //Adicionando nova Variavel
             Memoria.insert(novaVariavelTemp);
         }
-
     }
-
-
 }

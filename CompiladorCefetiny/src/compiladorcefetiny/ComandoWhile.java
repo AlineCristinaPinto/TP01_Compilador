@@ -16,11 +16,14 @@ public class ComandoWhile implements Comando {
 
     @Override
     public void execute() {
-        while (Expressao.Exp.calcula(expressao).equals("true")) {
-            for (int i = 0; i < listaComandos.getPseudolistaComandos().size(); i++) {
-                listaComandos.getPseudolistaComandos().get(i).execute();
+        if (ValidaSemantica.validaExpressao(expressao).equals("boolean")) {
+            while (Expressao.Exp.calcula(expressao).equals("true")) {
+                for (int i = 0; i < listaComandos.getPseudolistaComandos().size(); i++) {
+                    listaComandos.getPseudolistaComandos().get(i).execute();
+                }
             }
+        }else{
+            //Exception
         }
     }
-
 }
