@@ -1,4 +1,4 @@
-package compiladorcefetiny;
+package testeexpressao;
 
 /**
  *
@@ -30,6 +30,7 @@ public class Expressao {
         public static void prepara(){
             
             int iniCadeia = 0;
+            String valorVariavel = null;
             
             expressao = expressao.replace(" and ", "&");
             expressao = expressao.replace(" or ", "|");
@@ -52,16 +53,24 @@ public class Expressao {
                         
                     if( nomeDeVariavel( expressao.substring(iniCadeia, i) ) && Memoria.searchVariableExists( expressao.substring(iniCadeia, i) ) ){
                         var = Memoria.searchVariable( expressao.substring(iniCadeia, i) );
-                        
+                     
                         if( var.getType().compareTo("boolean") == 0 ){               
                             expressao = expressao.substring(0, iniCadeia) + "2=2" + expressao.substring( i, expressao.length() );
+                            i = i - ( i - iniCadeia ) + 3;
                         }
-                        else if( var.getType().compareTo("string") == 0 ){               
+                        else if( var.getType().compareTo("string") == 0 ){ 
+                            valorVariavel = (String) var.getValue();
                             expressao = expressao.substring(0, iniCadeia) + "\"" + var.getValue() + "\"" + expressao.substring( i, expressao.length() );
+                            i = i - ( i - iniCadeia ) + 2 + valorVariavel.length();
                         }
-                        else expressao = expressao.substring(0, iniCadeia) + var.getValue() + expressao.substring( i, expressao.length() );   
+                        else {
+                            valorVariavel = (String) var.getValue();
+                            expressao = expressao.substring(0, iniCadeia) + var.getValue() + expressao.substring( i, expressao.length() );
+                            i = i - ( i - iniCadeia ) + valorVariavel.length();
+                        }   
                     }
-                }                                                        
+                                        
+                } else i--;
             } 
             if( somaDeStrings() ){
                 boolean caractereON = false;
@@ -85,6 +94,7 @@ public class Expressao {
         }
         
         public static void processa(){
+            
             String elemento = null;
             int iniCadeia = 0;
         
