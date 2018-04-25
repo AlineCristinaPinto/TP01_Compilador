@@ -58,4 +58,15 @@ public class Memoria {
         
     }
     
+    public static void delete (String nomeVariavel){
+        Variavel[] vetorPilhaMem = new Variavel[pilhaMem.size()];
+        pilhaMem.toArray(vetorPilhaMem);
+        
+        for( int i = 0; i < vetorPilhaMem.length; i++ ){
+            if(vetorPilhaMem[i].getName().equals(nomeVariavel)){
+                pilhaMem.remove(vetorPilhaMem[i]);
+            }
+        }
+    }
+        
 }
