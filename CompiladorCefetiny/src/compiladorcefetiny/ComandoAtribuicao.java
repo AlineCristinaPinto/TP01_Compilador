@@ -49,8 +49,8 @@ public class ComandoAtribuicao implements Comando {
                     Memoria.update(variavelTemp);
                     break;
                 case "expressao":
-                    conteudoTemp = Expressao.Exp.calcula(conteudo);
-                    tipo = descobreTipoVariavel(conteudoTemp);
+                    conteudo = Expressao.Exp.calcula(conteudo);
+                    tipo = descobreTipoVariavel(conteudo);
                     variavelTemp.setType(tipo);
                     if(tipo.equals("int")){
                         variavelTemp.setValue(Integer.parseInt(conteudoTemp));
@@ -100,8 +100,8 @@ public class ComandoAtribuicao implements Comando {
                     Memoria.insert(novaVariavelTemp);
                     break;
                 case "expressao":
-                    conteudoTemp = Expressao.Exp.calcula(conteudo);
-                    tipo = descobreTipoVariavel(conteudoTemp);
+                    conteudo = Expressao.Exp.calcula(conteudo);
+                    tipo = descobreTipoVariavel(conteudo);
                     if(tipo.equals("int")){
                         novaVariavelTemp = new Variavel(variavel, tipo, Integer.parseInt(conteudoTemp));
                         // Adicionando nova Variavel

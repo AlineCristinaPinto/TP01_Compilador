@@ -485,10 +485,19 @@ public class ValidaSemantica {
     private static int encontraBooleano(String expressao){
         //regexBooleano: (true|false);
         
-        if(expressao.length() >= 5){
+        if(expressao.length() > 5){
+            if(expressao.substring(0, 5).equals("false") && 
+                    !(encontraLetra(expressao.charAt(5)) || encontraDigito(expressao.charAt(5)))){
+                return 5;
+            }else if(expressao.substring(0, 4).equals("true") && 
+                    !(encontraLetra(expressao.charAt(4)) || encontraDigito(expressao.charAt(4)))){
+                return 4;
+            }
+        }else if(expressao.length() == 5){
             if(expressao.substring(0, 5).equals("false")){
                 return 5;
-            }else if(expressao.substring(0, 4).equals("true")){
+            }else if(expressao.substring(0, 4).equals("true") && 
+                    !(encontraLetra(expressao.charAt(4)) || encontraDigito(expressao.charAt(4)))){
                 return 4;
             }
         }else if(expressao.length() == 4){

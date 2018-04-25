@@ -1,12 +1,12 @@
 package compiladorcefetiny;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author Aline, Eduardo Cotta, Luiz, Pedro Lucas e Ruan
  */
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Expressao {
     private String expressao;
@@ -30,37 +30,51 @@ public class Expressao {
         public static void prepara(){
             
             int iniCadeia = 0;
+            String valorVariavel = null;
             
             expressao = expressao.replace(" and ", "&");
             expressao = expressao.replace(" or ", "|");
             expressao = expressao.replace("not(", "!(");
-            
-            if( !somaDeStrings() ){
-                Variavel var = null;
+       
+            Variavel var = null;
                 
-                expressao = expressao.replace(" ", "");
-                
-                for(int i = 0; i < expressao.length(); i++){
-                    iniCadeia = i;
-                    while(expressao.charAt(i) != '(' && expressao.charAt(i) != '^' && expressao.charAt(i) != '*' && expressao.charAt(i) != '/' && expressao.charAt(i) != '+' && expressao.charAt(i) != '-' && expressao.charAt(i) != ')' && expressao.charAt(i) != '=' && expressao.charAt(i) != '<' && expressao.charAt(i) != '>' && expressao.charAt(i) != '&' && expressao.charAt(i) != '|'){
-                        if( i+1 == expressao.length()){
-                            i++; break;
-                        }
-                        else if( i+1 < expressao.length() ) i++;
-                    }   
-                    if(iniCadeia != i){
-                        if( nomeDeVariavel( expressao.substring(iniCadeia, i) ) && Memoria.searchVariableExists( expressao.substring(iniCadeia, i) ) ){
-                            var = Memoria.searchVariable( expressao.substring(iniCadeia, i) );
+            expressao = expressao.replace(" ", "");
                         
-                            if( var.getType().compareTo("boolean") == 0 ){
-                                expressao = expressao.substring(0, iniCadeia) + "2=2" + expressao.substring( i, expressao.length() );
-                            }
-                            expressao = expressao.substring(0, iniCadeia) + var.getValue() + expressao.substring( i, expressao.length() );
+            for(int i = 0; i < expressao.length(); i++){
+                iniCadeia = i;
+                   
+                while(expressao.charAt(i) != '(' && expressao.charAt(i) != '^' && expressao.charAt(i) != '*' && expressao.charAt(i) != '/' && expressao.charAt(i) != '+' && expressao.charAt(i) != '-' && expressao.charAt(i) != ')' && expressao.charAt(i) != '=' && expressao.charAt(i) != '<' && expressao.charAt(i) != '>' && expressao.charAt(i) != '&' && expressao.charAt(i) != '|'){
+                    if( i+1 == expressao.length()){
+                        i++; break;
+                    }
+                    else if( i+1 < expressao.length() ) i++;
+                }   
+                if(iniCadeia != i){
+                        
+                    if( nomeDeVariavel( expressao.substring(iniCadeia, i) ) && Memoria.searchVariableExists( expressao.substring(iniCadeia, i) ) ){
+                        var = Memoria.searchVariable( expressao.substring(iniCadeia, i) );
+                     
+                        if( var.getType().compareTo("boolean") == 0 ){               
+                            expressao = expressao.substring(0, iniCadeia) + "2=2" + expressao.substring( i, expressao.length() );
+                            i = i - ( i - iniCadeia ) + 3;
                         }
-                    }                                                        
-                }  
-            } else{
+                        else if( var.getType().compareTo("string") == 0 ){ 
+                            valorVariavel = (String) var.getValue();
+                            expressao = expressao.substring(0, iniCadeia) + "\"" + var.getValue() + "\"" + expressao.substring( i, expressao.length() );
+                            i = i - ( i - iniCadeia ) + 2 + valorVariavel.length();
+                        }
+                        else {
+                            valorVariavel = (String) var.getValue();
+                            expressao = expressao.substring(0, iniCadeia) + var.getValue() + expressao.substring( i, expressao.length() );
+                            i = i - ( i - iniCadeia ) + valorVariavel.length();
+                        }   
+                    }
+                                        
+                } else i--;
+            } 
+            if( somaDeStrings() ){
                 boolean caractereON = false;
+            
                 for(int i = 0; i < expressao.length(); i++){
                     
                     if( expressao.charAt(i) == '\'' | expressao.charAt(i) == '\"'){
@@ -75,10 +89,12 @@ public class Expressao {
                         i--;
                     }
                 }
-            }
+            }    
+            
         }
         
         public static void processa(){
+            
             String elemento = null;
             int iniCadeia = 0;
         
