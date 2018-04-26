@@ -30,6 +30,9 @@ public class MontaComandos {
                 case "while":
                     ListaExecucao.preencheLista(While(comando, isInsideCommand));
                     break;
+                case "for":
+                    ListaExecucao.preencheLista(For(comando, isInsideCommand));
+                    break;
             }
         } else {
             switch (comando.getTipoComando()) {
@@ -50,6 +53,9 @@ public class MontaComandos {
                     break;
                 case "while":
                     listaRecebida.preencheLista(While(comando, isInsideCommand));
+                    break;
+                case "for":
+                    listaRecebida.preencheLista(For(comando, isInsideCommand));
                     break;
             }
         }
@@ -119,7 +125,7 @@ public class MontaComandos {
                 }
             }
 
-            return new ComandoIf(expressao, (PseudoListaExecucao) listaIf.getPseudolistaComandos());
+            return new ComandoIf(expressao, listaIf);
         } else {
             PseudoListaExecucao listaIfInterno = new PseudoListaExecucao();
             String expressao = "";
@@ -132,7 +138,7 @@ public class MontaComandos {
                 }
             }
 
-            return new ComandoIf(expressao, (PseudoListaExecucao) listaIfInterno.getPseudolistaComandos());
+            return new ComandoIf(expressao, listaIfInterno);
         }
     }
 
@@ -163,7 +169,7 @@ public class MontaComandos {
                 }
             }
 
-            return new ComandoWhile(expressao, (PseudoListaExecucao) listaWhileInterno.getPseudolistaComandos());
+            return new ComandoWhile(expressao,listaWhileInterno);
         }
     }
 

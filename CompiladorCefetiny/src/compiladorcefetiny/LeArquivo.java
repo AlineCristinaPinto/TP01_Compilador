@@ -51,8 +51,7 @@ public class LeArquivo implements CanalEntrada {
     public char get() {
         if (contadorCaractere == textoArquivo.length()) {
             return 0;
-        }
-        //System.out.println(contadorCaractere);
+        }        
         char caractere = textoArquivo.charAt(contadorCaractere);
         contadorCaractere++;
         return caractere;

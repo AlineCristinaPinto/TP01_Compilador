@@ -10,6 +10,7 @@ public class AnaliseSintaticaComandos {
     private String expressaoPreparada;
     private CanalEntrada input;
     private int contaLinhas = 0;
+    private MontaComandos montaComandos = new MontaComandos();
 
     public AnaliseSintaticaComandos(CanalEntrada input) {
         this.expressaoPreparada = "";
@@ -19,6 +20,11 @@ public class AnaliseSintaticaComandos {
     }
 
     public void terceiraAnaliseSintatica() {
+        identificaComandos(true);
+    }
+
+    public PseudoComando identificaComandos(boolean primeiroIdentifica) {
+        PseudoComando tempComando = null;
         String palavraLida = "";
         char caractere = input.get();
         boolean esperaComandoAtribuicao = false;
@@ -38,31 +44,31 @@ public class AnaliseSintaticaComandos {
                         break;
                     case 2:
                         if (palavraLida.equals("if")) {
-                            PseudoComando tempComando = analiseComandoIf(palavraLida);
+                            tempComando = analiseComandoIf(palavraLida);
                             //chama Monta Comandos
                             palavraLida = "";
                             palavraPreenchida = false;
                         } else if (palavraLida.equals("for")) {
-                            PseudoComando tempComando = analiseComandoFor(palavraLida);
+                            tempComando = analiseComandoFor(palavraLida);
                             //chama Monta Comandos
                             palavraLida = "";
                             palavraPreenchida = false;
                         } else if (palavraLida.equals("while")) {
-                            PseudoComando tempComando = analiseComandoWhile(palavraLida);
+                            tempComando = analiseComandoWhile(palavraLida);
                             //chama Monta Comandos
                             palavraLida = "";
                             palavraPreenchida = false;
                         } else if (palavraLida.equals("print")) {
-                            PseudoComando tempComando = analiseComandoPrint(palavraLida);
+                            tempComando = analiseComandoPrint(palavraLida);
                             //chama Monta Comandos
                             palavraLida = "";
                         } else if (palavraLida.equals("println")) {
-                            PseudoComando tempComando = analiseComandoPrintln(palavraLida);
+                            tempComando = analiseComandoPrintln(palavraLida);
                             //chama Monta Comandos
                             palavraLida = "";
                             palavraPreenchida = false;
                         } else if (palavraLida.equals("readint")) {
-                            PseudoComando tempComando = analiseComandoReadint(palavraLida);
+                            tempComando = analiseComandoReadint(palavraLida);
                             //chama Monta Comandos
                             palavraLida = "";
                             palavraPreenchida = false;
@@ -78,9 +84,10 @@ public class AnaliseSintaticaComandos {
                 if (caractereTemp == '=') {
                     palavraLida += caractere;
                     palavraLida += caractereTemp;
-                    //PseudoComando tempComando = analiseComandoAtribuicao(palavraLida);
-                    System.out.println(analiseExpressao(palavraLida));
-                    //chama Monta Comandos
+                    tempComando = analiseComandoAtribuicao(palavraLida);
+                    if(primeiroIdentifica){
+                        //montaComandos.montaLista(tempComando, null, false);
+                    }
                     palavraLida = "";
                     palavraPreenchida = false;
                 } else {
@@ -93,12 +100,13 @@ public class AnaliseSintaticaComandos {
             } else {
                 //Exception
                 System.out.println("3");
+                System.out.println(caractere);
             }
             //System.out.println( palavraLida);
             caractere = input.get();
         }
 
-        if (palavraPreenchida) {
+        if (palavraPreenchida && primeiroIdentifica) {
             int retornoTipo = isComando(identificaPalavrasReservadas(palavraLida));
             if (retornoTipo == 2) {
                 if (palavraLida.equals("end")) {
@@ -109,7 +117,7 @@ public class AnaliseSintaticaComandos {
                 }
             }
         }
-
+        return tempComando;
     }
 
     private String identificaTipoCaractere(char caractere) {
@@ -154,8 +162,27 @@ public class AnaliseSintaticaComandos {
         }
 
         tipoPalavra = "variavel";
-
+        if (!validaVariavel(palavraObservada)) {
+            System.out.println("Exception12");
+        }
         return tipoPalavra;
+    }
+
+    private boolean validaVariavel(String palavraObservada) {
+        char arrayTemp[] = palavraObservada.toCharArray();
+        boolean existeNumeroPrimeiro = false;
+
+        existeNumeroPrimeiro = isNumero(String.valueOf(arrayTemp[0]));
+
+        if (existeNumeroPrimeiro) {
+            for (char caractere : arrayTemp) {
+                if (identificaTipoCaractere(caractere).equals("letra")) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     private int isComando(String tipo) {
@@ -175,7 +202,7 @@ public class AnaliseSintaticaComandos {
         }
     }
 
-    private String analiseExpressao(String palavraLida) {
+    private String analiseExpressao(String palavraLida, int indexParada, boolean expressaoLimitada) {
         String comandoLido = "";
         String palavraParcial = "";
         String tipoCaractere = "";
@@ -189,13 +216,16 @@ public class AnaliseSintaticaComandos {
         boolean operadorAnterior = false;
         boolean expressaoAnterior = false;
         boolean constanteBoolAnterior = false;
+        boolean existeAspas = false;
+        
+        
         int contaParentesesAbre = 0;
         int contaParentesesFecha = 0;
-
         int contaAspas = 0;
+        int contaIteraçoes = 0;
 
         tipoCaractere = identificaTipoCaractere(caractere);
-        while ((caractere != 0) && isComando) {
+        while (((caractere != 0) && isComando)) {
             if (tipoCaractere.equals("parenteses-abre")) {
                 if (!(palavraParcial.equals(""))) {
                     String tempTipoPalavra = identificaPalavrasReservadas(palavraParcial);
@@ -214,12 +244,17 @@ public class AnaliseSintaticaComandos {
                             isComando = false;
                             System.out.println("nnn");
                             break;
-                            //return maybe
-
+                        }
+                    } else if (retornoComando == 2) {
+                        if (!expressaoLimitada) {
+                            if (palavraParcial.equals("if") || palavraParcial.equals("print") || palavraParcial.equals("println") || palavraParcial.equals("while") || palavraParcial.equals("readint")) {
+                                isComando = false;
+                                break;
+                            }
                         }
                     } else {
                         //Exception
-                        System.out.println("5");
+                        System.out.println("5" + "   " + palavraParcial);
                     }
 
                 } else {
@@ -234,6 +269,9 @@ public class AnaliseSintaticaComandos {
                     expressaoAnterior = false;
                 }
             } else if (tipoCaractere.equals("aspas")) {
+                if (tipoCaractere.equals("aspas")) {
+                    existeAspas = !existeAspas;
+                }
                 palavraParcial += caractere;
                 contaAspas++;
             } else if (tipoCaractere.equals("op-aritmetico") || tipoCaractere.equals("op-logico") || (tipoCaractere.equals("igual") && !operadorAnterior)) {
@@ -277,10 +315,13 @@ public class AnaliseSintaticaComandos {
                     //Exception
                     System.out.println("9");
                 }
-            } else if (tipoCaractere.equals("espaco") && !palavraParcial.equals("")) {
+            } else if ((tipoCaractere.equals("espaco") || tipoCaractere.equals("quebra-linha")) && !palavraParcial.equals("") && !existeAspas) {
                 String tempTipoPalavra = identificaPalavrasReservadas(palavraParcial);
                 int retornoComando = isComando(tempTipoPalavra);
                 //System.out.println(palavraParcial + "  "+ retornoComando);
+                if (tipoCaractere.equals("quebra-linha")) {
+                    contaLinhas++;
+                }
                 if (numeroAnterior) {
                     comandoLido += palavraParcial;
                     palavraParcial = "";
@@ -318,7 +359,10 @@ public class AnaliseSintaticaComandos {
                         }
                     }
                 } else {
-                    //Erro, comando fora de lugar;
+                    if (retornoComando == 2 && !expressaoLimitada) {
+                        isComando = false;
+                        break;
+                    }
                     System.out.println("11");
                 }
             } else if (tipoCaractere.equals("numero")) {
@@ -332,14 +376,7 @@ public class AnaliseSintaticaComandos {
                     System.out.println("Erro, sintaxe incorreta1");
                 }
             } else if (tipoCaractere.equals("letra")) {
-                if (numeroAnterior) {
-                    //Erro, sintaxe errada
-                    System.out.println("12");
-                } else {
-                    palavraParcial += caractere;
-                }
-            } else if (tipoCaractere.equals("quebra-linha")) {
-                contaLinhas++;
+                palavraParcial += caractere;
             } else if (tipoCaractere.equals("ponto")) {
                 if (numeroAnterior) {
                     palavraParcial += caractere;
@@ -351,17 +388,34 @@ public class AnaliseSintaticaComandos {
                 if (operadorAnterior || variavelAnterior || numeroAnterior || constanteBoolAnterior || expressaoAnterior || operadorUnarioAnterior) {
                     palavraParcial += caractere;
                 }
-            } else {
-                //Exceção caractere não esperado
-                System.out.println("Erro, sintaxe incorreta3");
+            } else if(tipoCaractere.equals(":")){
+                
+            }else {
+                if (!tipoCaractere.equals("espaco") && !tipoCaractere.equals("quebra-linha")) {
+                    //Exceção caractere não esperado
+                    System.out.println("Erro, sintaxe incorreta3" + "   " + (int) caractere);
+                }
             }
             caractere = input.get();
             tipoCaractere = identificaTipoCaractere(caractere);
+            contaIteraçoes++;
+            if ((contaIteraçoes == indexParada) && expressaoLimitada) {
+                break;
+            }
         }
 
+        //Fim while
+        if (contaParentesesAbre - contaParentesesFecha != 0) {
+            //Exception, parenteses errados
+
+        }
+        if (contaAspas % 2 != 0) {
+            //Exception, aspas errados
+            System.out.println("Aspas erradas");
+        }
         int tamanhoPalavra = palavraParcial.length();
 
-        if (tamanhoPalavra == 1) {
+        if (tamanhoPalavra == 1 && isComando) {
             char ultimoChar = palavraParcial.charAt(0);
             String tipoUltimoChar = identificaTipoCaractere(ultimoChar);
 
@@ -376,7 +430,7 @@ public class AnaliseSintaticaComandos {
                 }
             }//Checar no teste
 
-        } else if (tamanhoPalavra > 1) {
+        } else if (tamanhoPalavra > 1 && isComando) {
             String tempTipoPalavra = identificaPalavrasReservadas(palavraParcial);
             int retornoComando = isComando(tempTipoPalavra);
 
@@ -386,26 +440,16 @@ public class AnaliseSintaticaComandos {
             } else {
                 if (variavelAnterior || expressaoAnterior || constanteBoolAnterior || operadorUnarioAnterior || numeroAnterior) {
                     //Exception, variável inserida fora de contexto
-                    System.out.println("a");
                 }
             }
         }
-        comandoLido += palavraParcial;
+        if (isComando) {
+            comandoLido += palavraParcial;
+        }
+
         return palavraLida + comandoLido;
     }
 
-    /* private int identificaTipoPalavraAnterior(String palavraAnterior){
-        char arrayTemp [] = palavraAnterior.toCharArray();
-        
-        boolean existeNumero = false;
-        boolean existeLetra = false;
-        
-        for(char charTemp : arrayTemp){
-            String tempTipo = identificaTipoCaractere(charTemp);
-            if()
-        }
-       
-    }*/
     private boolean isNumero(String possivelNumero) {
         char arrayTemp[] = possivelNumero.toCharArray();
 
@@ -418,7 +462,11 @@ public class AnaliseSintaticaComandos {
     }
 
     private PseudoComando analiseComandoAtribuicao(String palavraLida) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String retornoExpressao = analiseExpressao(palavraLida, 0, false);
+
+        System.out.println(retornoExpressao);
+
+        return null;
     }
 
     private PseudoComando analiseComandoIf(String palavraLida) {
@@ -434,15 +482,115 @@ public class AnaliseSintaticaComandos {
     }
 
     private PseudoComando analiseComandoPrint(String palavraLida) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int contAbreParenteses = 0;
+        int contFechaParenteses = 0;
+        int contNumeroGet = 0;
+        int tempNumGet = 0;
+        char caractere = input.get();
+        while(caractere != 40){
+            if(caractere == 32){
+                caractere = input.get();
+            }else{
+                //exception
+            }
+        }
+        while(!(contFechaParenteses > contAbreParenteses)){
+            contNumeroGet++;
+            caractere = input.get();
+            if(caractere == 40){
+                contAbreParenteses++;
+            }
+            if(caractere == 41){
+                contFechaParenteses++;
+            }
+        }
+        tempNumGet = contNumeroGet;
+        while(contNumeroGet != 0){
+            input.unget();
+            contNumeroGet--;
+        }
+        String tempPalavraLida = palavraLida + "(";
+        String expressao = analiseExpressao(tempPalavraLida, (tempNumGet - 1), true);
+        expressao = expressao + input.get();
+        PseudoComando tempComando = new PseudoComando(null, expressao, "print", false);
+        
+        return tempComando;
     }
 
     private PseudoComando analiseComandoPrintln(String palavraLida) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int contAbreParenteses = 0;
+        int contFechaParenteses = 0;
+        int contNumeroGet = 0;
+        int tempNumGet = 0;
+        char caractere = input.get();
+        while(caractere != 40){
+            if(caractere == 32){
+                caractere = input.get();
+            }else{
+                //exception
+            }
+        }
+        while(!(contFechaParenteses > contAbreParenteses)){
+            contNumeroGet++;
+            caractere = input.get();
+            if(caractere == 40){
+                contAbreParenteses++;
+            }
+            if(caractere == 41){
+                contFechaParenteses++;
+            }
+        }
+        tempNumGet = contNumeroGet;
+        while(contNumeroGet != 0){
+            input.unget();
+            contNumeroGet--;
+        }
+        String tempPalavraLida = palavraLida + "(";
+        String expressao = analiseExpressao(tempPalavraLida,(tempNumGet - 1), true);
+        expressao = expressao + input.get();
+        PseudoComando tempComando = new PseudoComando(null, expressao, "println", false);
+        
+        return tempComando;
     }
 
     private PseudoComando analiseComandoReadint(String palavraLida) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int contAbreParenteses = 0;
+        int contFechaParenteses = 0;
+        int contNumeroGet = 0;
+        int tempNumGet = 0;
+        String variavel = "";
+        char caractere = input.get();
+        while(caractere != 40){
+            if(caractere == 32){
+                caractere = input.get();
+            }else{
+                //exception
+            }
+        }
+        while(!(contFechaParenteses > contAbreParenteses)){
+            contNumeroGet++;
+            caractere = input.get();
+            if(caractere == 40){
+                contAbreParenteses++;
+            }
+            if(caractere == 41){
+                contFechaParenteses++;
+            }
+        }
+        tempNumGet = contNumeroGet;
+        while(contNumeroGet != 0){
+            input.unget();
+            contNumeroGet--;
+        }
+        while(contNumeroGet != tempNumGet-1){
+            variavel += input.get();
+        }
+        validaVariavel(variavel);
+        String stringComando = palavraLida + "(";
+        stringComando += variavel;
+        PseudoComando tempComando = new PseudoComando(null, variavel, "readint", false);
+        
+        return tempComando;
     }
 
     private String verificaOperadorUnario() {

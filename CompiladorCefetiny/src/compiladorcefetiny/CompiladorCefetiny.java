@@ -12,7 +12,7 @@ public class CompiladorCefetiny {
         //Atribuicao a = new Atribuicao ();
         //a.realizaAtribuicao("aline:=\"eduardo\"");
         //a.realizaAtribuicao("aline:=10");
-        
+
         /*Variavel v = new Variavel();
         v.setName("aaa");
         v.setType("String");
