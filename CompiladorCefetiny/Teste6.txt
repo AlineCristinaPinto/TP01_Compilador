@@ -1,0 +1,58 @@
+println("calculadoracefetiny")
+sair:= 0
+
+while(sair= 0)then
+    println("0soma")
+    println("1subtracao")
+    println("2multiplicacao")
+    println("3divisao")
+    println("4sair")
+
+    readint(operacao)
+    if(operacao = 0)then
+        println("digito1")
+        readint(digito1)
+        println("digito2")
+        readint(digito2)
+        println("resultado" +(digito1+digito2))
+    else
+        if(operacao = 1)then
+            println("digito1")
+            readint(digito1)
+            println("digito2")
+            readint(digito2)
+            println("resultado" +(digito1-digito2))
+        else
+            if(operacao = 2)then
+                println("digito1")
+                readint(digito1)
+                println("digito2")
+                readint(digito2)
+                println("resultado" +(digito1*digito2))
+            else
+                if(operacao = 3)then
+                    println("digito1")
+                    readint(digito1)
+                    println("digito2")
+                    readint(digito2)
+                    println("resultado" +(digito1/digito2))
+                else
+                    if(operacao = 4)then
+                        sair := 1
+                    endif
+                endif
+            endif
+        endif
+    endif 
+endwhile
+end
+
+/*
+->imprime na tela: "calculadoracefetiny" e as opções que o usuário pode escolher para executar o programa
+->como sair é inicializado com 0, sempre executa o primeiro while
+->no inicio do while pede ao usuário que escolha uma opção
+->dependendo da escolha do usuário entra no if referente à escolha. Cada if pede ao usuário 2 dígitos e retorna 
+  o resultado de acordo com a operação escolhida, exceto pelo último if que atribui o valor 1 à variável
+  sair, e então sai do while. Se esta opção não for escolhida, reinicia o while pedindo ao usuário, novamente,
+  para que escolha uma opção.
+*/

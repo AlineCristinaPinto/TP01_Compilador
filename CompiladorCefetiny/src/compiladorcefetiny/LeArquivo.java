@@ -15,7 +15,7 @@ public class LeArquivo implements CanalEntrada {
     private int contadorCaractere;
 
     public LeArquivo() {
-        textoArquivo  = "";
+        textoArquivo  = "b:=3+5 \n if(true)";
     }
 
     public void fileToString() {
@@ -46,7 +46,7 @@ public class LeArquivo implements CanalEntrada {
     public void zeraContador(){
         contadorCaractere=0;
     }
-    
+
     @Override
     public char get() {
         if (contadorCaractere == textoArquivo.length()) {

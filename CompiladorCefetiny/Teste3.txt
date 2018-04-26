@@ -1,0 +1,10 @@
+println("digite5valorespares")
+for i:= 0 to i <5 do 
+    readint(a)
+    while(a mod 2<>0)do
+        println("poessevalorehimpardigitenovamente")
+        readint(a)
+    endwhile
+endfor
+print("parabensvcdigitou5valorespares")
+end

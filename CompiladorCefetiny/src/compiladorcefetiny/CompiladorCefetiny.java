@@ -9,6 +9,11 @@ import java.util.Scanner;
 public class CompiladorCefetiny {
 
     public static void main(String[] args) {
+        LeArquivo l = new LeArquivo();
+        ScannerSimbolo s = new ScannerSimbolo (l);
+        
+        s.analisaCaractere();
+        
         //Atribuicao a = new Atribuicao ();
         //a.realizaAtribuicao("aline:=\"eduardo\"");
         //a.realizaAtribuicao("aline:=10");

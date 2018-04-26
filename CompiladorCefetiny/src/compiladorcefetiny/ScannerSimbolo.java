@@ -13,7 +13,7 @@ public class ScannerSimbolo {
     private String expressaoPreparada;
 
     public ScannerSimbolo(CanalEntrada input) {
-        this.expressaoPreparada = "";
+        this.expressaoPreparada = "b:= 5+5 \n if()";
         this.input = input;
     }
 
@@ -24,7 +24,7 @@ public class ScannerSimbolo {
         input.zeraContador();
         AnaliseSintaticaComandos analisaMonta = new AnaliseSintaticaComandos(input);
         analisaMonta.terceiraAnaliseSintatica();
-        
+
     }
 
     private void primeiraAnaliseCaracteres() {
@@ -40,9 +40,9 @@ public class ScannerSimbolo {
                     if (tipoCaractere.equals("quebra-linha")) {
                         contaLinhas++;
                     }
-                    if (existeAspas && ((!(tipoCaractere.equals("numero"))) && (!(tipoCaractere.equals("letra"))))) {
+                    if (existeAspas && ((!(tipoCaractere.equals("numero"))) && (!(tipoCaractere.equals("letra"))) && (!(tipoCaractere.equals("espaco"))))) {
                         char a = caractere;
-                       // System.out.println(tipoCaractere);
+                        // System.out.println(tipoCaractere);
                         System.err.println("Caractere inválido dentro de uma constante String" + "    Linha: " + contaLinhas);
                         //Exception Caractere Inválido
                     }
@@ -60,24 +60,28 @@ public class ScannerSimbolo {
         CaractereLidoeEsperado conjuntoCaractere = new CaractereLidoeEsperado();
         conjuntoCaractere.caractereAtual = input.get();
         boolean existeAspas = false;
-        while ((conjuntoCaractere.caractereAtual != 0) || !(conjuntoCaractere.fimArquivo)) {
+        while ((conjuntoCaractere.caractereAtual != 0) && !(conjuntoCaractere.fimArquivo)) {
             String tipoCaractere = identificaTipoCaractere(conjuntoCaractere.caractereAtual);
-            if (tipoCaractere.equals("aspas") && !existeAspas) {
+            if (tipoCaractere.equals("aspas")) {
                 existeAspas = !existeAspas;
-            } else if (!(tipoCaractere.equals("espaco")) && !(tipoCaractere.equals("quebra-linha")) ) {
-                conjuntoCaractere.setTipoAtual(tipoCaractere);
-                String[] tempArray = geraTiposEsperados(tipoCaractere);
-                conjuntoCaractere.setTipos_esperados(tempArray);
-
-                boolean sintaxeProxCerta = checaProximoCaractere(conjuntoCaractere);
-                if (!sintaxeProxCerta) {
-                    //Exception sintaxe errada
-                    System.out.println("Erro! Sintaxe errada");
-                    //System.out.println(conjuntoCaractere.caractereAtual);
-                }
-            }else if(tipoCaractere.equals("quebra-linha")){
-                contaLinhas++;
             }
+            if (!existeAspas) {
+                if (!(tipoCaractere.equals("espaco")) && !(tipoCaractere.equals("quebra-linha"))) {
+                    conjuntoCaractere.setTipoAtual(tipoCaractere);
+                    String[] tempArray = geraTiposEsperados(tipoCaractere);
+                    conjuntoCaractere.setTipos_esperados(tempArray);
+
+                    boolean sintaxeProxCerta = checaProximoCaractere(conjuntoCaractere);
+                    if (!sintaxeProxCerta) {
+                        //Exception sintaxe errada
+                        System.out.println("Erro! Sintaxe errada");
+                        System.out.println(conjuntoCaractere.caractereAtual);
+                    }
+                } else if (tipoCaractere.equals("quebra-linha")) {
+                    contaLinhas++;
+                }
+            }
+
             conjuntoCaractere.caractereAtual = input.get();
         }
     }
@@ -210,7 +214,7 @@ public class ScannerSimbolo {
         contaGet++;
         while (caractereProx == 32) {
             caractereProx = input.get();
-            if(caractereProx ==0){
+            if (caractereProx == 0) {
                 return true;
             }
             contaGet++;
@@ -220,46 +224,49 @@ public class ScannerSimbolo {
         //System.out.println(caractereAtual.caractereAtual);
         //System.out.println(caractereProx);
         String tipoProxCaractere = identificaTipoCaractere(caractereProx);
-
-        if (existeEspaço && (caractereAtual.tipoAtual.equals("dois-pontos") || caractereAtual.tipoAtual.equals("ponto") || tipoProxCaractere.equals("letra") || tipoProxCaractere.equals("numero"))) {
-            if (caractereAtual.tipoAtual.equals("dois-pontos") || caractereAtual.tipoAtual.equals("ponto")) {
-                // Exception sintaxe errada
-            } else if (caractereAtual.tipoAtual.equals("letra") || caractereAtual.tipoAtual.equals("numero")) {
-                if (tipoProxCaractere.equals("letra")) {
-                    caractereAtual.existeEspacoDepois = true;
+        if (!tipoProxCaractere.equals("quebra-linha")) {
+            if (existeEspaço && (caractereAtual.tipoAtual.equals("dois-pontos") || caractereAtual.tipoAtual.equals("ponto") || tipoProxCaractere.equals("letra") || tipoProxCaractere.equals("numero"))) {
+                if (caractereAtual.tipoAtual.equals("dois-pontos") || caractereAtual.tipoAtual.equals("ponto")) {
+                    // Exception sintaxe errada
+                } else if (caractereAtual.tipoAtual.equals("letra") || caractereAtual.tipoAtual.equals("numero")) {
+                    if (tipoProxCaractere.equals("letra")) {
+                        caractereAtual.existeEspacoDepois = true;
+                        tipoEsperadoCorreto = true;
+                    } else if (tipoProxCaractere.equals("numero") && caractereAtual.tipoAtual.equals("numero")) {
+                        //Exception sintaxe errada
+                    } else {
+                        tipoEsperadoCorreto = true;
+                    }
+                } else {
                     tipoEsperadoCorreto = true;
                 }
-                if (tipoProxCaractere.equals("numero")&& caractereAtual.tipoAtual.equals("numero")) {
-                    //Exception sintaxe errada
-                }else{
-                  tipoEsperadoCorreto = true;  
+            } else if (caractereAtual.tipoAtual.equals("op-logico") && (tipoProxCaractere.equals("op-logico") || tipoProxCaractere.equals("igual"))) {
+                if (existeEspaço) {
+                    tipoEsperadoCorreto = false;
+                } else {
+                    if (caractereAtual.caractereAtual == '<' && caractereProx == '>') {
+                        tipoEsperadoCorreto = true;
+                    } else if ((caractereAtual.caractereAtual == '>' && caractereProx == '<') || (caractereAtual.caractereAtual == '>' && caractereProx == '>') || (caractereAtual.caractereAtual == '<' && caractereProx == '<')) {
+                        tipoEsperadoCorreto = false;
+                    } else {
+                        tipoEsperadoCorreto = true;
+                    }
                 }
+            } else if (caractereAtual.caractereAtual == '\"' && tipoProxCaractere.equals("op-aritmetico")) {
+                tipoEsperadoCorreto = caractereProx == '+';
+            } else if (caractereAtual.tipoAtual.equals("op-aritmetico") && tipoProxCaractere.equals("aspas")) {
+                tipoEsperadoCorreto = caractereAtual.caractereAtual == '+';
+            }else if (caractereAtual.tipoAtual.equals("parenteses-fecha") && tipoProxCaractere.equals("letra")) {
+                tipoEsperadoCorreto = existeEspaço;
             } else {
-                tipoEsperadoCorreto = true;
-            }
-        } else if (caractereAtual.tipoAtual.equals("op-logico") && (tipoProxCaractere.equals("op-logico") || tipoProxCaractere.equals("igual"))) {
-            if (existeEspaço) {
-                tipoEsperadoCorreto = false;
-            } else {
-                if (caractereAtual.caractereAtual == '<' && caractereProx == '>') {
-                    tipoEsperadoCorreto = true;
-                }else if((caractereAtual.caractereAtual == '>' && caractereProx == '<')||(caractereAtual.caractereAtual == '>' && caractereProx == '>')||(caractereAtual.caractereAtual == '<' && caractereProx == '<')){
-                   tipoEsperadoCorreto = false; 
-                }else{
-                    tipoEsperadoCorreto = true;
+                for (String tipo_esperado : caractereAtual.tipos_esperados) {
+                    if (tipoProxCaractere.equals(tipo_esperado)) {
+                        tipoEsperadoCorreto = true;
+                    }
                 }
             }
-        } else if (caractereAtual.caractereAtual == '\"' && tipoProxCaractere.equals("op-aritmetico")) {
-            tipoEsperadoCorreto = caractereProx == '+';
-        }else if(caractereAtual.tipoAtual.equals("parenteses-fecha") && tipoProxCaractere.equals("letra")){
-            tipoEsperadoCorreto = existeEspaço;
-        }else {
-           // System.out.println(tipoProxCaractere + "    " + caractereProx);
-            for (String tipo_esperado : caractereAtual.tipos_esperados) {
-                if (tipoProxCaractere.equals(tipo_esperado)) {
-                    tipoEsperadoCorreto = true;
-                }
-            }
+        } else {
+            tipoEsperadoCorreto = true;
         }
 
         for (int i = 0; i < contaGet; i++) {
