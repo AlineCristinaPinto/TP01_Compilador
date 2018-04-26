@@ -6,9 +6,11 @@
             <file>file:/C:/Users/Pedro%20H/Desktop/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/ComandoReadint.java</file>
             <file>file:/C:/Users/Pedro%20H/Desktop/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/ComandoWhile.java</file>
             <file>file:/C:/Users/Pedro%20H/Desktop/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/MontaComandos.java</file>
-            <file>file:/C:/Users/Pedro%20H/Desktop/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/ComandoIf.java</file>
+            <file>file:/C:/Users/Pedro%20H/Desktop/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/ListaExecucao.java</file>
             <file>file:/C:/Users/Pedro%20H/Desktop/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/ComandoFor.java</file>
-            <file>file:/C:/Users/Pedro%20H/Desktop/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/PseudoComando.java</file>
+            <file>file:/C:/Users/Pedro%20H/Desktop/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/Memoria.java</file>
+            <file>file:/C:/Users/Pedro%20H/Desktop/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/ComandoIf.java</file>
+            <file>file:/C:/Users/Pedro%20H/Desktop/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/PseudoListaExecucao.java</file>
         </group>
     </open-files>
 </project-private>

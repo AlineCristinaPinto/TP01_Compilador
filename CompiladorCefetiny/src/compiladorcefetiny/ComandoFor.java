@@ -43,7 +43,7 @@ public class ComandoFor implements Comando {
                 variavelTemp.setValue(Integer.parseInt(variavelTemp.getValue().toString()) - 1);
             }
         }
-
+        Memoria.delete(variavel);
     }
 
     private ComandoAtribuicao atribuicao(String comando) {
