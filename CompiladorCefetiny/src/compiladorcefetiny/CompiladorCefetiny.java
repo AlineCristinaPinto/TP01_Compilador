@@ -10,6 +10,11 @@ public class CompiladorCefetiny {
 
     public static void main(String[] args) {
         Scanner ent = new Scanner (System.in);
+        LeArquivo l = new LeArquivo();
+        ScannerSimbolo s = new ScannerSimbolo (l);
+        
+        s.analisaCaractere();
+
         //Atribuicao a = new Atribuicao ();
         //a.realizaAtribuicao("aline:=\"eduardo\"");
         //a.realizaAtribuicao("aline:=10");
@@ -40,4 +45,17 @@ public class CompiladorCefetiny {
  
         }*/
     }
+    
+    private static boolean isNumero(String possivelNumero){
+       char arrayTemp [] = possivelNumero.toCharArray();
+        
+        for(char charTemp : arrayTemp){
+            if(!((charTemp >47 && charTemp<58) || charTemp == 46))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }
+
