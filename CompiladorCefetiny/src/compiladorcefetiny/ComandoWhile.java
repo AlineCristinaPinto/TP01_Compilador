@@ -6,12 +6,24 @@ package compiladorcefetiny;
  */
 public class ComandoWhile implements Comando {
 
-    public ComandoWhile(String expressao, PseudoListaExecucao conteudo) {
+    private String expressao;
+    private PseudoListaExecucao listaComandos;
+
+    public ComandoWhile(String expressao, PseudoListaExecucao listaComandos) {
+        this.expressao = expressao;
+        this.listaComandos = listaComandos;
     }
 
     @Override
     public void execute() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (ValidaSemantica.validaExpressao(expressao).equals("boolean")) {
+            while (Expressao.Exp.calcula(expressao).equals("true")) {
+                for (int i = 0; i < listaComandos.getPseudolistaComandos().size(); i++) {
+                    listaComandos.getPseudolistaComandos().get(i).execute();
+                }
+            }
+        }else{
+            //Exception
+        }
     }
-
 }

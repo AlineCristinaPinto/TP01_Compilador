@@ -9,11 +9,9 @@ import java.util.List;
  */
 public class ListaExecucao {
 
-    private static List<Comando> listaComandos;
+    private static List<Comando> listaComandos = new ArrayList<>(); ;
 
-    public ListaExecucao() {
-        listaComandos = new ArrayList<>();
-    }
+    public ListaExecucao() {}
 
     public static void preencheLista(Comando comando) {
         listaComandos.add(comando);

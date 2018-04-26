@@ -3,9 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/7/Desktop/Compilador/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/CompiladorCefetiny.java</file>
             <file>file:/C:/Users/7/Desktop/Compilador/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/AnaliseSintaticaComandos.java</file>
+            <file>file:/C:/Users/7/Desktop/Compilador/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/CompiladorCefetiny.java</file>
             <file>file:/C:/Users/7/Desktop/Compilador/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/ScannerSimbolo.java</file>
+            <file>file:/C:/Users/7/Desktop/Compilador/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/ValidaSemantica.java</file>
             <file>file:/C:/Users/7/Desktop/Compilador/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/LeArquivo.java</file>
             <file>file:/C:/Users/7/Desktop/Compilador/TP01_Compilador/CompiladorCefetiny/src/compiladorcefetiny/MontaComandos.java</file>
         </group>
