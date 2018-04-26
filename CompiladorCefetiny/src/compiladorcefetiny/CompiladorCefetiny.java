@@ -9,7 +9,6 @@ import java.util.Scanner;
 public class CompiladorCefetiny {
 
     public static void main(String[] args) {
-        Scanner ent = new Scanner (System.in);
         //Atribuicao a = new Atribuicao ();
         //a.realizaAtribuicao("aline:=\"eduardo\"");
         //a.realizaAtribuicao("aline:=10");

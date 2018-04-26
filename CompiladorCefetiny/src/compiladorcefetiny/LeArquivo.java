@@ -15,7 +15,7 @@ public class LeArquivo implements CanalEntrada {
     private int contadorCaractere;
 
     public LeArquivo() {
-        textoArquivo  = "b:=(5+5)";
+        textoArquivo  = "";
     }
 
     public void fileToString() {
