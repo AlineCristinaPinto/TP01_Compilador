@@ -14,160 +14,294 @@ public class ValidaSemantica {
     //identificador de seu tipo correspondente. b = booleano, n = numerico, s = string,
     //r( = sqrt(, i( = not(. Os operadores nao sao alterados.
     
-    public static String validaExpressao(String expressao){
+    public static String validaExpressao(String expressao) throws ExcecaoExpressaoInvalida{
         expressao = expressao.trim();
         String expressaoTipos = "";
         
-        if(expressao.length() > 0){
-            //tipoEsperado e' utilizada para alternar entre a leitura de operandos ou operadores.
-            //fimUltimoTermo guarda a ultima posicao do ultimo termo lido.
-            //contaFechaParenteses conta para verificar se cada parenteses aberto
-            //esta' sendo devidamente fechado
-            int tipoEsperado = 0, fimUltimoTermo = 0, contaFechaParenteses = 0;
+            if(expressao.length() > 0){
+                //tipoEsperado e' utilizada para alternar entre a leitura de operandos ou operadores.
+                //fimUltimoTermo guarda a ultima posicao do ultimo termo lido.
+                //contaFechaParenteses conta para verificar se cada parenteses aberto
+                //esta' sendo devidamente fechado
+                int tipoEsperado = 0, fimUltimoTermo = 0, contaFechaParenteses = 0;
 
-            for(int i = 0; i <= expressao.length(); i++){
-                //se tipoEsperado == 0, verifica se o proximo termo lido sera' um operando
-                if(tipoEsperado == 0){
-                    if(encontraEspaco(expressao.substring(fimUltimoTermo)) > 0){
-                        fimUltimoTermo = fimUltimoTermo + encontraEspaco(expressao.substring(fimUltimoTermo));
-                        tipoEsperado = 0;
+                for(int i = 0; i <= expressao.length(); i++){
+                    //se tipoEsperado == 0, verifica se o proximo termo lido sera' um operando
+                    if(tipoEsperado == 0){
+                        if(encontraEspaco(expressao.substring(fimUltimoTermo)) > 0){
+                            fimUltimoTermo = fimUltimoTermo + encontraEspaco(expressao.substring(fimUltimoTermo));
+                            tipoEsperado = 0;
 
-                    }else if(encontraSqrt(expressao.substring(fimUltimoTermo)) > 0){
-                        fimUltimoTermo = fimUltimoTermo + encontraSqrt(expressao.substring(fimUltimoTermo));
-                        tipoEsperado = 0;
-                        contaFechaParenteses++;
-                        expressaoTipos += "r(";
+                        }else if(encontraSqrt(expressao.substring(fimUltimoTermo)) > 0){
+                            fimUltimoTermo = fimUltimoTermo + encontraSqrt(expressao.substring(fimUltimoTermo));
+                            tipoEsperado = 0;
+                            contaFechaParenteses++;
+                            expressaoTipos += "r(";
 
-                    }else if(encontraNot(expressao.substring(fimUltimoTermo)) > 0){
-                        fimUltimoTermo = fimUltimoTermo + encontraNot(expressao.substring(fimUltimoTermo));
-                        tipoEsperado = 0;
-                        contaFechaParenteses++;
-                        expressaoTipos += "i(";
+                        }else if(encontraNot(expressao.substring(fimUltimoTermo)) > 0){
+                            fimUltimoTermo = fimUltimoTermo + encontraNot(expressao.substring(fimUltimoTermo));
+                            tipoEsperado = 0;
+                            contaFechaParenteses++;
+                            expressaoTipos += "i(";
 
-                    }else if(encontraConstanteNumerica(expressao.substring(fimUltimoTermo)) > 0){
-                        fimUltimoTermo = fimUltimoTermo + encontraConstanteNumerica(expressao.substring(fimUltimoTermo));
-                        tipoEsperado = 1;
-                        expressaoTipos += "n";
-
-                    }else if(encontraBooleano(expressao.substring(fimUltimoTermo)) > 0){
-                        fimUltimoTermo = fimUltimoTermo + encontraBooleano(expressao.substring(fimUltimoTermo));
-                        tipoEsperado = 1;
-                        expressaoTipos += "b";
-
-                    }else if(encontraVariavel(expressao.substring(fimUltimoTermo)) > 0){
-                        int auxFimUltimoTermo = fimUltimoTermo;
-                        fimUltimoTermo = fimUltimoTermo + encontraVariavel(expressao.substring(fimUltimoTermo));
-                        String variavel = expressao.substring(auxFimUltimoTermo, fimUltimoTermo);
-
-                        //checa se a variavel esta' na memoria e o tipo dela
-                        if(Memoria.searchVariableExists(variavel)){
-                            Variavel var = Memoria.searchVariable(variavel);
+                        }else if(encontraConstanteNumerica(expressao.substring(fimUltimoTermo)) > 0){
+                            fimUltimoTermo = fimUltimoTermo + encontraConstanteNumerica(expressao.substring(fimUltimoTermo));
                             tipoEsperado = 1;
-                            switch(var.getType()){
-                                case "boolean":
-                                    expressaoTipos += "b";
-                                    break;
-                                case "string":
-                                    expressaoTipos += "s";
-                                    break;
-                                case "int":
-                                case "double":
-                                    expressaoTipos += "n";
-                                    break;
-                                case "expressao":
-                                    //se for do tipo expressao, remove a variavel da expressao
-                                    //e substitui pelo valor correspondente
-                                    String auxExpressao = expressao.substring(fimUltimoTermo);
-                                    expressao = expressao.substring(0, auxFimUltimoTermo) 
-                                            +"(" +var.getValue() +")";
-                                    expressao += auxExpressao;
-                                    tipoEsperado = 0;
-                                    fimUltimoTermo = auxFimUltimoTermo;
-                                    break;
+                            expressaoTipos += "n";
+
+                        }else if(encontraBooleano(expressao.substring(fimUltimoTermo)) > 0){
+                            fimUltimoTermo = fimUltimoTermo + encontraBooleano(expressao.substring(fimUltimoTermo));
+                            tipoEsperado = 1;
+                            expressaoTipos += "b";
+
+                        }else if(encontraVariavel(expressao.substring(fimUltimoTermo)) > 0){
+                            int auxFimUltimoTermo = fimUltimoTermo;
+                            fimUltimoTermo = fimUltimoTermo + encontraVariavel(expressao.substring(fimUltimoTermo));
+                            String variavel = expressao.substring(auxFimUltimoTermo, fimUltimoTermo);
+
+                            //checa se a variavel esta' na memoria e o tipo dela
+                            if(Memoria.searchVariableExists(variavel)){
+                                Variavel var = Memoria.searchVariable(variavel);
+                                tipoEsperado = 1;
+                                switch(var.getType()){
+                                    case "boolean":
+                                        expressaoTipos += "b";
+                                        break;
+                                    case "string":
+                                        expressaoTipos += "s";
+                                        break;
+                                    case "int":
+                                    case "double":
+                                        expressaoTipos += "n";
+                                        break;
+                                    case "expressao":
+                                        //se for do tipo expressao, remove a variavel da expressao
+                                        //e substitui pelo valor correspondente
+                                        String auxExpressao = expressao.substring(fimUltimoTermo);
+                                        expressao = expressao.substring(0, auxFimUltimoTermo) 
+                                                +"(" +var.getValue() +")";
+                                        expressao += auxExpressao;
+                                        tipoEsperado = 0;
+                                        fimUltimoTermo = auxFimUltimoTermo;
+                                        break;
+                                }
+                            }else {
+                                throw new ExcecaoExpressaoInvalida("Variável " +variavel +" não encontrada: " +expressao);
                             }
-                        }else {
-                            //throws exception variavel nao encontrada
-                            //return "ERRO: variavel nao encontrada";
-                            return "erro";
+
+                        }else if(encontraString(expressao.substring(fimUltimoTermo)) > 0){
+                            fimUltimoTermo = fimUltimoTermo + encontraString(expressao.substring(fimUltimoTermo));
+                            tipoEsperado = 1;
+                            expressaoTipos += "s";
+
+                        }else if(encontraAbreParenteses(expressao.substring(fimUltimoTermo)) > 0){
+                            fimUltimoTermo = fimUltimoTermo + encontraAbreParenteses(expressao.substring(fimUltimoTermo));
+                            contaFechaParenteses++;
+                            tipoEsperado = 0;
+                            expressaoTipos += "(";
+                        }else{
+                            throw new ExcecaoExpressaoInvalida("Expressão inválida:" +expressao);
                         }
+                    //se tipoEsperado == 1 verifica se o proximo termo lido sera' um operador
+                    }else if(tipoEsperado == 1){
+                        if(encontraEspaco(expressao.substring(fimUltimoTermo)) > 0){
+                            fimUltimoTermo = fimUltimoTermo + encontraEspaco(expressao.substring(fimUltimoTermo));
+                            tipoEsperado = 1;
+                        }else if(encontraOperadoresNumericos(expressao.substring(fimUltimoTermo)) > 0){
+                            int auxFimUltimoTermo = fimUltimoTermo;
+                            fimUltimoTermo = fimUltimoTermo + encontraOperadoresNumericos(expressao.substring(fimUltimoTermo));
+                            tipoEsperado = 0;
+                            expressaoTipos += expressao.substring(auxFimUltimoTermo, fimUltimoTermo).trim();
 
-                    }else if(encontraString(expressao.substring(fimUltimoTermo)) > 0){
-                        fimUltimoTermo = fimUltimoTermo + encontraString(expressao.substring(fimUltimoTermo));
-                        tipoEsperado = 1;
-                        expressaoTipos += "s";
+                        }else if(encontraOperadoresRelacionais(expressao.substring(fimUltimoTermo)) > 0){
+                            int auxFimUltimoTermo = fimUltimoTermo;
+                            fimUltimoTermo = fimUltimoTermo + encontraOperadoresRelacionais(expressao.substring(fimUltimoTermo));
+                            tipoEsperado = 0;
+                            expressaoTipos += expressao.substring(auxFimUltimoTermo, fimUltimoTermo);
 
-                    }else if(encontraAbreParenteses(expressao.substring(fimUltimoTermo)) > 0){
-                        fimUltimoTermo = fimUltimoTermo + encontraAbreParenteses(expressao.substring(fimUltimoTermo));
-                        contaFechaParenteses++;
-                        tipoEsperado = 0;
-                        expressaoTipos += "(";
-                    }else{
-                        //throws exception
-                        //return "ERRO: expressao invalida";
-                        return "erro";
-                    }
-                //se tipoEsperado == 1 verifica se o proximo termo lido sera' um operador
-                }else if(tipoEsperado == 1){
-                    if(encontraEspaco(expressao.substring(fimUltimoTermo)) > 0){
-                        fimUltimoTermo = fimUltimoTermo + encontraEspaco(expressao.substring(fimUltimoTermo));
-                        tipoEsperado = 1;
-                    }else if(encontraOperadoresNumericos(expressao.substring(fimUltimoTermo)) > 0){
-                        int auxFimUltimoTermo = fimUltimoTermo;
-                        fimUltimoTermo = fimUltimoTermo + encontraOperadoresNumericos(expressao.substring(fimUltimoTermo));
-                        tipoEsperado = 0;
-                        expressaoTipos += expressao.substring(auxFimUltimoTermo, fimUltimoTermo).trim();
+                        }else if(encontraOperadoresLogicos(expressao.substring(fimUltimoTermo)) > 0){
+                            int auxFimUltimoTermo = fimUltimoTermo;
+                            fimUltimoTermo = fimUltimoTermo + encontraOperadoresLogicos(expressao.substring(fimUltimoTermo));
+                            tipoEsperado = 0;
+                            expressaoTipos += expressao.substring(auxFimUltimoTermo, fimUltimoTermo);
 
-                    }else if(encontraOperadoresRelacionais(expressao.substring(fimUltimoTermo)) > 0){
-                        int auxFimUltimoTermo = fimUltimoTermo;
-                        fimUltimoTermo = fimUltimoTermo + encontraOperadoresRelacionais(expressao.substring(fimUltimoTermo));
-                        tipoEsperado = 0;
-                        expressaoTipos += expressao.substring(auxFimUltimoTermo, fimUltimoTermo);
+                        }else if(encontraFechaParenteses(expressao.substring(fimUltimoTermo)) > 0){
+                            fimUltimoTermo = fimUltimoTermo + encontraFechaParenteses(expressao.substring(fimUltimoTermo));
+                            contaFechaParenteses--;
+                            if(contaFechaParenteses < 0){
+                                throw new ExcecaoExpressaoInvalida("Expressão inválida, fechamento incorreto de parenteses: " +expressao);
+                            }
+                            tipoEsperado = 1;
+                            expressaoTipos += ")";
 
-                    }else if(encontraOperadoresLogicos(expressao.substring(fimUltimoTermo)) > 0){
-                        int auxFimUltimoTermo = fimUltimoTermo;
-                        fimUltimoTermo = fimUltimoTermo + encontraOperadoresLogicos(expressao.substring(fimUltimoTermo));
-                        tipoEsperado = 0;
-                        expressaoTipos += expressao.substring(auxFimUltimoTermo, fimUltimoTermo);
-
-                    }else if(encontraFechaParenteses(expressao.substring(fimUltimoTermo)) > 0){
-                        fimUltimoTermo = fimUltimoTermo + encontraFechaParenteses(expressao.substring(fimUltimoTermo));
-                        contaFechaParenteses--;
-                        if(contaFechaParenteses < 0){
-                            //throws exception fecha parenteses a mais
-                            //return "ERRO: fecha parenteses a mais";
-                            return "erro";
+                        }else{
+                            throw new ExcecaoExpressaoInvalida("Expressão inválida:" +expressao);
                         }
-                        tipoEsperado = 1;
-                        expressaoTipos += ")";
-
-                    }else{
-                        //throws exception
-                        //return "ERRO: expressao invalida";
-                        return "erro";
                     }
+                    i = fimUltimoTermo;
+
                 }
-                i = fimUltimoTermo;
+                if(contaFechaParenteses > 0){
+                    throw new ExcecaoExpressaoInvalida("Expressão inválida, parenteses não foi fechado: " +expressao);
+                }
 
-            }
-            if(contaFechaParenteses > 0){
-                //throws exception
-                //return "ERRO: parenteses nao foi fechado";
-                return "erro";
-            }
+                return resolveExpTipos(expressaoTipos, expressao);
 
-            return resolveExpTipos(expressaoTipos);
-            
-        }else{
-            //throws exception expressao nula
-            return "erro";
-        }
+            }else{
+                throw new ExcecaoExpressaoInvalida("Expressão nula");
+            }
     }
     
-    private static String resolveExpTipos(String expressao){
+    private static String resolveExpTipos(String expressaoTipos, String expressao) throws ExcecaoExpressaoInvalida{
         
-        expressao = substituiOp(expressao);
+        while(expressaoTipos.contains("n+n") || expressaoTipos.contains("n-n") ||
+                expressaoTipos.contains("n*n") || expressaoTipos.contains("n/n") ||
+                expressaoTipos.contains("n^n") || expressaoTipos.contains("nmodn") || 
+                expressaoTipos.contains("ndivn") || expressaoTipos.contains("r(n)") || 
+                expressaoTipos.contains("s+b") || expressaoTipos.contains("s+n") || 
+                expressaoTipos.contains("s+s") || expressaoTipos.contains("n+s") || 
+                expressaoTipos.contains("b+s") || expressaoTipos.contains("n+b") || 
+                expressaoTipos.contains("b+b") || expressaoTipos.contains("n=n") || 
+                expressaoTipos.contains("n<>n") || expressaoTipos.contains("n>n") || 
+                expressaoTipos.contains("n<n") || expressaoTipos.contains("b=b") || 
+                expressaoTipos.contains("b<>b") || expressaoTipos.contains("i(b)") || 
+                expressaoTipos.contains("borb") || expressaoTipos.contains("bandb") || 
+                expressaoTipos.contains("s=s") ||expressaoTipos.contains("s<>s") || 
+                expressaoTipos.contains("n=b") || expressaoTipos.contains("n<>b") || 
+                expressaoTipos.contains("n=s") || expressaoTipos.contains("n<>s") || 
+                expressaoTipos.contains("b=n") || expressaoTipos.contains("b<>n") || 
+                expressaoTipos.contains("b=s") || expressaoTipos.contains("b<>s") || 
+                expressaoTipos.contains("(n)") || expressaoTipos.contains("(b)") || 
+                expressaoTipos.contains("(s)") || expressaoTipos.contains("n<=n") ||
+                expressaoTipos.contains("n>=n")){
+            System.out.println(expressaoTipos);
+            if(expressaoTipos.contains("n+n")){
+                expressaoTipos = expressaoTipos.replace("n+n", "n");
+            }else if(expressaoTipos.contains("n-n")){
+                expressaoTipos = expressaoTipos.replace("n-n", "n");
+            }else if(expressaoTipos.contains("n*n")){
+                expressaoTipos = expressaoTipos.replace("n*n", "n");
+            }else if(expressaoTipos.contains("n/n")){
+                expressaoTipos = expressaoTipos.replace("n/n", "n");
+            }else if(expressaoTipos.contains("n^n")){
+                expressaoTipos = expressaoTipos.replace("n^n", "n");
+            }else if(expressaoTipos.contains("nmodn")){
+                expressaoTipos = expressaoTipos.replace("nmodn", "n");
+            }else if(expressaoTipos.contains("ndivn")){
+                expressaoTipos = expressaoTipos.replace("ndivn", "n");
+            }else if(expressaoTipos.contains("r(n)")){
+                expressaoTipos = expressaoTipos.replace("r(n)", "n");
+            }else if(expressaoTipos.contains("i(b)")){
+                expressaoTipos = expressaoTipos.replace("i(b)", "b");
+            }else if(expressaoTipos.contains("s+b")){
+                expressaoTipos = expressaoTipos.replace("s+b", "s");
+            }else if(expressaoTipos.contains("s+n")){
+                expressaoTipos = expressaoTipos.replace("s+n", "s");
+            }else if(expressaoTipos.contains("s+s")){
+                expressaoTipos = expressaoTipos.replace("s+s", "s");
+            }else if(expressaoTipos.contains("n+s")){
+                expressaoTipos = expressaoTipos.replace("n+s", "s");
+            }else if(expressaoTipos.contains("b+s")){
+                expressaoTipos = expressaoTipos.replace("b+s", "s");
+            }else if(expressaoTipos.contains("(n)")){
+                expressaoTipos = expressaoTipos.replace("(n)", "n");
+            }else if(expressaoTipos.contains("(b)")){
+                expressaoTipos = expressaoTipos.replace("(b)", "b");
+            }else if(expressaoTipos.contains("(s)")){
+                expressaoTipos = expressaoTipos.replace("(s)", "s");
+            }else if(expressaoTipos.contains("b+b") || expressaoTipos.contains("b+n") ||
+                    expressaoTipos.contains("n+b")){
+                throw new ExcecaoExpressaoInvalida("Expressao inválida, operação incorreta: " +expressao);
+            } else {
+                if(expressaoTipos.contains("(n<n)")){
+                    expressaoTipos = expressaoTipos.replace("(n<n)", "b");
+                }else if(expressaoTipos.contains("(n>n)")){
+                    expressaoTipos = expressaoTipos.replace("(n>n)", "b");
+                }else if(expressaoTipos.contains("(n<=n)")){
+                    expressaoTipos = expressaoTipos.replace("(n<=n)", "b");
+                }else if(expressaoTipos.contains("(n>=n)")){
+                    expressaoTipos = expressaoTipos.replace("(n>=n)", "b");
+                }else if(expressaoTipos.contains("(bandb)")){
+                    expressaoTipos = expressaoTipos.replace("(bandb)", "b");
+                }else if(expressaoTipos.contains("(borb)")){
+                    expressaoTipos = expressaoTipos.replace("(borb)", "b");
+                }else{
+
+                    if(expressaoTipos.contains("=")){
+                        for(int i = 0; i < expressaoTipos.length(); i++){
+                            if(expressaoTipos.charAt(i) == '='){
+                                String auxExpressaoTipos = expressaoTipos.substring(i - 1, i + 2);
+                                if(auxExpressaoTipos.equals("n=b") || auxExpressaoTipos.equals("n=s") ||
+                                    auxExpressaoTipos.equals("b=n") || auxExpressaoTipos.equals("b=s") ||
+                                    auxExpressaoTipos.equals("s=n") || auxExpressaoTipos.equals("s=b")){
+                                throw new ExcecaoExpressaoInvalida("Expressao inválida, comparação incorreta: " +expressao);
+                                }else if(auxExpressaoTipos.charAt(0) == auxExpressaoTipos.charAt(auxExpressaoTipos.length()-1)){
+                                    expressaoTipos = expressaoTipos.replace(auxExpressaoTipos, "b");
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if(expressaoTipos.contains("<>")){
+                        for(int i = 0; i < expressaoTipos.length(); i++){
+                            if(expressaoTipos.charAt(i) == '<' && expressaoTipos.charAt(i + 1) == '>'){
+                                String auxExpressaoTipos = expressaoTipos.substring(i-1, i + 3);
+                                if(auxExpressaoTipos.equals("n<>b") || auxExpressaoTipos.equals("n<>s") ||
+                                    auxExpressaoTipos.equals("b<>n") || auxExpressaoTipos.equals("b<>s") ||
+                                    auxExpressaoTipos.equals("s<>n") || auxExpressaoTipos.equals("s<>b")){
+                                    throw new ExcecaoExpressaoInvalida("Expressao inválida, comparação incorreta: " +expressao);
+                                }else if(auxExpressaoTipos.charAt(0) == auxExpressaoTipos.charAt(auxExpressaoTipos.length()-1)){
+                                    expressaoTipos = expressaoTipos.replace(auxExpressaoTipos, "b");
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if(
+                            expressaoTipos.contains("n<b") || expressaoTipos.contains("n>b") ||
+                            expressaoTipos.contains("n<=b") || expressaoTipos.contains("n>=b")||
+                            expressaoTipos.contains("n<s") || expressaoTipos.contains("n>s") ||
+                            expressaoTipos.contains("n<=s") || expressaoTipos.contains("n>=s") ||
+
+                            expressaoTipos.contains("b<b") ||
+                            expressaoTipos.contains("b<n") || expressaoTipos.contains("b>") ||
+                            expressaoTipos.contains("b<=") || expressaoTipos.contains("b>=") ||
+                            expressaoTipos.contains("b<s") ||
+
+                            expressaoTipos.contains("s<s") ||
+                            expressaoTipos.contains("s<n") || expressaoTipos.contains("s>") ||
+                            expressaoTipos.contains("s<=") || expressaoTipos.contains("s>=") ||
+                            expressaoTipos.contains("s<b")
+                            ){
+                        throw new ExcecaoExpressaoInvalida("Expressao inválida, comparação incorreta: " +expressao);
+                    }
+
+                    if(expressaoTipos.contains("n<n")){
+                        expressaoTipos = expressaoTipos.replace("n<n", "b");
+                    }else if(expressaoTipos.contains("n>n")){
+                        expressaoTipos = expressaoTipos.replace("n>n", "b");
+                    }else if(expressaoTipos.contains("n<=n")){
+                        expressaoTipos = expressaoTipos.replace("n<=n", "b");
+                    }else if(expressaoTipos.contains("n>=n")){
+                        expressaoTipos = expressaoTipos.replace("n>=n", "b");
+                    }else if(expressaoTipos.contains("bandb")){
+                        expressaoTipos = expressaoTipos.replace("bandb", "b");
+                    }else if(expressaoTipos.contains("borb")){
+                        expressaoTipos = expressaoTipos.replace("borb", "b");
+                    }else if(expressaoTipos.contains("(n)")){
+                        expressaoTipos = expressaoTipos.replace("(n)", "n");
+                    }else if(expressaoTipos.contains("(b)")){
+                        expressaoTipos = expressaoTipos.replace("(b)", "b");
+                    }else if(expressaoTipos.contains("(s)")){
+                        expressaoTipos = expressaoTipos.replace("(s)", "s");
+                    }
+                }
+            }
+        }
         
-        switch (expressao) {
+        switch (expressaoTipos) {
             case "b":
                 return "boolean";
             case "n":
@@ -175,128 +309,19 @@ public class ValidaSemantica {
             case "s":
                 return "string";
             default:
-                return "erro";
+                System.out.println(expressaoTipos);
+                throw new ExcecaoExpressaoInvalida("Expressão inválida:" +expressao);
         }
     }
     
-    private static String substituiOp(String expressao){
-        while(expressao.contains("n+n") || expressao.contains("n-n") ||
-                expressao.contains("n*n") || expressao.contains("n/n") ||
-                expressao.contains("n^n") || expressao.contains("nmodn") || 
-                expressao.contains("ndivn") || expressao.contains("r(n)") || 
-                expressao.contains("s+b") || expressao.contains("s+n") || 
-                expressao.contains("s+s") || expressao.contains("n+s") || 
-                expressao.contains("b+s") || expressao.contains("n+b") || 
-                expressao.contains("b+b") || expressao.contains("n=n") || 
-                expressao.contains("n<>n") || expressao.contains("n>n") || 
-                expressao.contains("n<n") || expressao.contains("b=b") || 
-                expressao.contains("b<>b") || expressao.contains("i(b)") || 
-                expressao.contains("borb") || expressao.contains("bandb") || 
-                expressao.contains("s=s") ||expressao.contains("s<>s") || 
-                expressao.contains("n=b") || expressao.contains("n<>b") || 
-                expressao.contains("n=s") || expressao.contains("n<>s") || 
-                expressao.contains("b=n") || expressao.contains("b<>n") || 
-                expressao.contains("b=s") || expressao.contains("b<>s") || 
-                expressao.contains("(n)") || expressao.contains("(b)") || 
-                expressao.contains("(s)")){
-            
-            if(expressao.contains("n+n")){
-                expressao = expressao.replace("n+n", "n");
-            }else if(expressao.contains("n-n")){
-                expressao = expressao.replace("n-n", "n");
-            }else if(expressao.contains("n*n")){
-                expressao = expressao.replace("n*n", "n");
-            }else if(expressao.contains("n/n")){
-                expressao = expressao.replace("n/n", "n");
-            }else if(expressao.contains("n^n")){
-                expressao = expressao.replace("n^n", "n");
-            }else if(expressao.contains("nmodn")){
-                expressao = expressao.replace("nmodn", "n");
-            }else if(expressao.contains("ndivn")){
-                expressao = expressao.replace("ndivn", "n");
-            }else if(expressao.contains("r(n)")){
-                expressao = expressao.replace("r(n)", "n");
-            }else if(expressao.contains("i(b)")){
-                expressao = expressao.replace("i(b)", "b");
-            }else if(expressao.contains("s+b")){
-                expressao = expressao.replace("s+b", "s");
-            }else if(expressao.contains("s+n")){
-                expressao = expressao.replace("s+n", "s");
-            }else if(expressao.contains("n+b")){
-                //throws exception
-                return "ERRO: expressao invalida - soma de numerico com boolean";
-            }else if(expressao.contains("b+b")){
-                //throws exception
-                return "ERRO: expressao invalida - soma de boolean com boolean";
-            }else if(expressao.contains("s+s")){
-                expressao = expressao.replace("s+s", "s");
-            }else if(expressao.contains("n+s")){
-                expressao = expressao.replace("n+s", "s");
-            }else if(expressao.contains("b+s")){
-                expressao = expressao.replace("b+s", "s");
-            }else if(expressao.contains("(n)")){
-                expressao = expressao.replace("(n)", "n");
-            }else if(expressao.contains("(b)")){
-                expressao = expressao.replace("(b)", "b");
-            }else if(expressao.contains("(s)")){
-                expressao = expressao.replace("(s)", "s");
-            }else if(expressao.contains("n=n")){
-                expressao = expressao.replace("n=n", "b");
-            }else if(expressao.contains("n<>n")){
-                expressao = expressao.replace("n<>n", "b");
-            }else if(expressao.contains("n<n")){
-                expressao = expressao.replace("n<n", "b");
-            }else if(expressao.contains("n>n")){
-                expressao = expressao.replace("n>n", "b");
-            }else if(expressao.contains("b=b")){
-                expressao = expressao.replace("b=b", "b");
-            }else if(expressao.contains("b<>b")){
-                expressao = expressao.replace("b<>b", "b");
-            }else if(expressao.contains("i(b)")){
-                expressao = expressao.replace("i(b)", "b");
-            }else if(expressao.contains("borb")){
-                expressao = expressao.replace("borb", "b");
-            }else if(expressao.contains("bandb")){
-                expressao = expressao.replace("bandb", "b");
-            }else if(expressao.contains("s=s")){
-                expressao = expressao.replace("s=s", "b");
-            }else if(expressao.contains("s<>s")){
-                expressao = expressao.replace("s<>s", "b");
-            }else if(expressao.contains("n=b")){
-                //throws exception
-                return "ERRO: expressao invalida: comparacao entre numerico e boolean";
-            }else if(expressao.contains("n<>b")){
-                //throws exception
-                return "ERRO: expressao invalida: comparacao entre numerico e boolean";
-            }else if(expressao.contains("n=s")){
-                //throws exception
-                return "ERRO: expressao invalida: comparacao entre numerico e string";
-            }else if(expressao.contains("n<>s")){
-                //throws exception
-                return "ERRO: expressao invalida: comparacao entre numerico e string";
-            }else if(expressao.contains("b=n")){
-                //throws exception
-                return "ERRO: expressao invalida: comparacao entre boolean e numerico";
-            }else if(expressao.contains("b<>n")){
-                //throws exception
-                return "ERRO: expressao invalida: comparacao entre boolean e numerico";
-            }else if(expressao.contains("b=s")){
-                //throws exception
-                return "ERRO: expressao invalida: comparacao entre boolean e string";
-            }else if(expressao.contains("b<>s")){
-                //throws exception
-                return "ERRO: expressao invalida: comparacao entre boolean e string";
-            }else if(expressao.contains("(n)")){
-                expressao = expressao.replace("(n)", "n");
-            }else if(expressao.contains("(b)")){
-                expressao = expressao.replace("(b)", "b");
-            }else if(expressao.contains("(s)")){
-                expressao = expressao.replace("(s)", "s");
-            }
-        
+    private static String operacaoSubstitui(String expressaoTipos, String operacao, String resultado){
+        if(expressaoTipos.contains(operacao)){
+            expressaoTipos = expressaoTipos.replace(operacao, resultado);
         }
-        return expressao;
+        
+        return expressaoTipos;
     }
+    
     
     //Todos os metodos encontraxxx procuram por um termo e retornam a ultima 
     //posicao do termo encontrado. Caso nao encontre o que procura, retorna -1, 

@@ -1,0 +1,12 @@
+corredor1:= 2
+corredor2:= 3
+
+while(corredor1<corredor2)do
+    println(corredor1)
+    println(corredor2)
+    corredor1:=corredor1*1.5
+    corredor2:= corredor2*1.25
+endwhile
+println(corredor1)
+println(corredor2)
+end
