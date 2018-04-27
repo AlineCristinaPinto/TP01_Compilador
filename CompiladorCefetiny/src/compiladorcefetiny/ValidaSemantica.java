@@ -226,67 +226,58 @@ public class ValidaSemantica {
                 }else if(expressaoTipos.contains("(borb)")){
                     expressaoTipos = expressaoTipos.replace("(borb)", "b");
                 }else{
-
-                    if(expressaoTipos.contains("=")){
-                        for(int i = 0; i < expressaoTipos.length(); i++){
-                            if(expressaoTipos.charAt(i) == '='){
-                                String auxExpressaoTipos = expressaoTipos.substring(i - 1, i + 2);
-                                if(auxExpressaoTipos.equals("n=b") || auxExpressaoTipos.equals("n=s") ||
-                                    auxExpressaoTipos.equals("b=n") || auxExpressaoTipos.equals("b=s") ||
-                                    auxExpressaoTipos.equals("s=n") || auxExpressaoTipos.equals("s=b")){
-                                throw new ExcecaoExpressaoInvalida("Expressao inválida, comparação incorreta: " +expressao);
-                                }else if(auxExpressaoTipos.charAt(0) == auxExpressaoTipos.charAt(auxExpressaoTipos.length()-1)){
-                                    expressaoTipos = expressaoTipos.replace(auxExpressaoTipos, "b");
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    if(expressaoTipos.contains("<>")){
-                        for(int i = 0; i < expressaoTipos.length(); i++){
-                            if(expressaoTipos.charAt(i) == '<' && expressaoTipos.charAt(i + 1) == '>'){
-                                String auxExpressaoTipos = expressaoTipos.substring(i-1, i + 3);
-                                if(auxExpressaoTipos.equals("n<>b") || auxExpressaoTipos.equals("n<>s") ||
-                                    auxExpressaoTipos.equals("b<>n") || auxExpressaoTipos.equals("b<>s") ||
-                                    auxExpressaoTipos.equals("s<>n") || auxExpressaoTipos.equals("s<>b")){
-                                    throw new ExcecaoExpressaoInvalida("Expressao inválida, comparação incorreta: " +expressao);
-                                }else if(auxExpressaoTipos.charAt(0) == auxExpressaoTipos.charAt(auxExpressaoTipos.length()-1)){
-                                    expressaoTipos = expressaoTipos.replace(auxExpressaoTipos, "b");
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
+                    
                     if(
-                            expressaoTipos.contains("n<b") || expressaoTipos.contains("n>b") ||
-                            expressaoTipos.contains("n<=b") || expressaoTipos.contains("n>=b")||
-                            expressaoTipos.contains("n<s") || expressaoTipos.contains("n>s") ||
-                            expressaoTipos.contains("n<=s") || expressaoTipos.contains("n>=s") ||
-
-                            expressaoTipos.contains("b<b") ||
-                            expressaoTipos.contains("b<n") || expressaoTipos.contains("b>") ||
-                            expressaoTipos.contains("b<=") || expressaoTipos.contains("b>=") ||
-                            expressaoTipos.contains("b<s") ||
-
-                            expressaoTipos.contains("s<s") ||
-                            expressaoTipos.contains("s<n") || expressaoTipos.contains("s>") ||
-                            expressaoTipos.contains("s<=") || expressaoTipos.contains("s>=") ||
-                            expressaoTipos.contains("s<b")
-                            ){
+                        expressaoTipos.contains("n<b") || expressaoTipos.contains("n>b") ||
+                        expressaoTipos.contains("n<=b") || expressaoTipos.contains("n>=b")||
+                        expressaoTipos.contains("n<s") || expressaoTipos.contains("n>s") ||
+                        expressaoTipos.contains("n<=s") || expressaoTipos.contains("n>=s") ||
+                        expressaoTipos.contains("b<b") || expressaoTipos.contains("s<b") ||
+                        expressaoTipos.contains("b<n") || expressaoTipos.contains("b>") ||
+                        expressaoTipos.contains("b<=") || expressaoTipos.contains("b>=") ||
+                        expressaoTipos.contains("b<s") || expressaoTipos.contains("s<s") ||
+                        expressaoTipos.contains("s<n") || expressaoTipos.contains("s>") ||
+                        expressaoTipos.contains("s<=") || expressaoTipos.contains("s>=")){
                         throw new ExcecaoExpressaoInvalida("Expressao inválida, comparação incorreta: " +expressao);
                     }
-
-                    if(expressaoTipos.contains("n<n")){
-                        expressaoTipos = expressaoTipos.replace("n<n", "b");
-                    }else if(expressaoTipos.contains("n>n")){
-                        expressaoTipos = expressaoTipos.replace("n>n", "b");
-                    }else if(expressaoTipos.contains("n<=n")){
-                        expressaoTipos = expressaoTipos.replace("n<=n", "b");
-                    }else if(expressaoTipos.contains("n>=n")){
-                        expressaoTipos = expressaoTipos.replace("n>=n", "b");
-                    }else if(expressaoTipos.contains("bandb")){
+                    
+                    for(int i = 0; i < expressaoTipos.length(); i++){
+                        if(expressaoTipos.charAt(i) == '='){
+                            String auxExpressaoTipos = expressaoTipos.substring(i - 1, i + 2);
+                            if(auxExpressaoTipos.equals("n=b") || auxExpressaoTipos.equals("n=s") ||
+                                auxExpressaoTipos.equals("b=n") || auxExpressaoTipos.equals("b=s") ||
+                                auxExpressaoTipos.equals("s=n") || auxExpressaoTipos.equals("s=b")){
+                            throw new ExcecaoExpressaoInvalida("Expressao inválida, comparação incorreta: " +expressao);
+                            }else if(auxExpressaoTipos.charAt(0) == auxExpressaoTipos.charAt(auxExpressaoTipos.length()-1)){
+                                expressaoTipos = expressaoTipos.replace(auxExpressaoTipos, "b");
+                                i = 0;
+                            }
+                        }else if(expressaoTipos.contains("<>") && (expressaoTipos.charAt(i) == '<' && expressaoTipos.charAt(i + 1) == '>')){
+                            String auxExpressaoTipos = expressaoTipos.substring(i-1, i + 3);
+                            if(auxExpressaoTipos.equals("n<>b") || auxExpressaoTipos.equals("n<>s") ||
+                                auxExpressaoTipos.equals("b<>n") || auxExpressaoTipos.equals("b<>s") ||
+                                auxExpressaoTipos.equals("s<>n") || auxExpressaoTipos.equals("s<>b")){
+                                throw new ExcecaoExpressaoInvalida("Expressao inválida, comparação incorreta: " +expressao);
+                            }else if(auxExpressaoTipos.charAt(0) == auxExpressaoTipos.charAt(auxExpressaoTipos.length()-1)){
+                                expressaoTipos = expressaoTipos.replace(auxExpressaoTipos, "b");
+                                i = 0;
+                            }
+                        }else if(expressaoTipos.charAt(i) == '<'){
+                            expressaoTipos = expressaoTipos.replace("n<n", "b");
+                            i = 0;
+                        }else if(expressaoTipos.charAt(i) == '>'){
+                            expressaoTipos = expressaoTipos.replace("n>n", "b");
+                            i = 0;
+                        }else if(expressaoTipos.charAt(i) == '<' && expressaoTipos.charAt(i + 1) == '='){
+                            expressaoTipos = expressaoTipos.replace("n<=n", "b");
+                            i = 0;
+                        }else if(expressaoTipos.charAt(i) == '>' && expressaoTipos.charAt(i + 1) == '='){
+                            expressaoTipos = expressaoTipos.replace("n>=n", "b");
+                            i = 0;
+                        }
+                    }
+                    
+                    if(expressaoTipos.contains("bandb")){
                         expressaoTipos = expressaoTipos.replace("bandb", "b");
                     }else if(expressaoTipos.contains("borb")){
                         expressaoTipos = expressaoTipos.replace("borb", "b");
