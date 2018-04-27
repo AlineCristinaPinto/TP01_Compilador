@@ -487,7 +487,55 @@ public class AnaliseSintaticaComandos {
     }
 
     private PseudoComando analiseComandoWhile(String palavraLida) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int contAbreParenteses = 0;
+        int contFechaParenteses = 0;
+        int contNumeroGet = 0;
+        int tempNumGet = 0;
+        char caractere = input.get();
+        while(caractere != 40){
+            if(caractere == 32){
+                caractere = input.get();
+            }else{
+                //exception
+            }
+        }
+        while(!(contFechaParenteses > contAbreParenteses)){
+            contNumeroGet++;
+            caractere = input.get();
+            if(caractere == 40){
+                contAbreParenteses++;
+            }
+            if(caractere == 41){
+                contFechaParenteses++;
+            }
+        }
+        tempNumGet = contNumeroGet;
+        while(contNumeroGet != 0){
+            input.unget();
+            contNumeroGet--;
+        }
+        String tempPalavraLida = palavraLida + "(";
+        String expressao = analiseExpressao(tempPalavraLida, (tempNumGet - 1), true);
+        expressao = expressao + input.get();
+        
+        caractere = input.get();
+        while(caractere != 100){
+            if(caractere == 32){
+                caractere = input.get();
+            }
+            else{
+                //exception
+            }
+        }
+        caractere = input.get();
+        if(caractere == 111){
+            caractere = input.get();
+            if(caractere != 32){
+                //exception
+            }
+        }else{
+            //exception
+        }
     }
 
     private PseudoComando analiseComandoPrint(String palavraLida) {
