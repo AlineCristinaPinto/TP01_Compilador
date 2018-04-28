@@ -13,11 +13,11 @@ public class ScannerSimbolo {
     private String expressaoPreparada;
 
     public ScannerSimbolo(CanalEntrada input) {
-        this.expressaoPreparada = "b:= 5+5 \n if()";
+        this.expressaoPreparada = "";
         this.input = input;
     }
 
-    public void analisaCaractere() {
+    public void analisaCaractere() throws ExcecaoSintaxeIncorreta {
         primeiraAnaliseCaracteres();
         input.zeraContador();
         segundaAnaliseCaracteres();
@@ -27,7 +27,7 @@ public class ScannerSimbolo {
 
     }
 
-    private void primeiraAnaliseCaracteres() {
+    private void primeiraAnaliseCaracteres() throws ExcecaoSintaxeIncorreta {
         boolean validaCaracteres = true;
         char caractere = input.get();
         boolean existeAspas = false;
@@ -41,22 +41,17 @@ public class ScannerSimbolo {
                         contaLinhas++;
                     }
                     if (existeAspas && ((!(tipoCaractere.equals("numero"))) && (!(tipoCaractere.equals("letra"))) && (!(tipoCaractere.equals("espaco"))))) {
-                        char a = caractere;
-                        // System.out.println(tipoCaractere);
-                        System.err.println("Caractere inválido dentro de uma constante String" + "    Linha: " + contaLinhas);
-                        //Exception Caractere Inválido
+                        throw new ExcecaoSintaxeIncorreta("Caractere inválido dentro de uma constante String" + "    Linha: " + contaLinhas);
                     }
                 }
-            } else {
-                System.err.println("Caractere inválido" + "    Linha: " + contaLinhas);
-                //Exception Caractere Inválido
+                throw new ExcecaoSintaxeIncorreta("Caractere inválido" + "    Linha: " + contaLinhas);
             }
             caractere = input.get();
         }
         System.out.println("Tudo certo!");
     }
 
-    private void segundaAnaliseCaracteres() {
+    private void segundaAnaliseCaracteres() throws ExcecaoSintaxeIncorreta {
         CaractereLidoeEsperado conjuntoCaractere = new CaractereLidoeEsperado();
         conjuntoCaractere.caractereAtual = input.get();
         boolean existeAspas = false;
@@ -73,9 +68,7 @@ public class ScannerSimbolo {
 
                     boolean sintaxeProxCerta = checaProximoCaractere(conjuntoCaractere);
                     if (!sintaxeProxCerta) {
-                        //Exception sintaxe errada
-                        System.out.println("Erro! Sintaxe errada");
-                        System.out.println(conjuntoCaractere.caractereAtual);
+                        throw new ExcecaoSintaxeIncorreta("Caractere não pode ser sucedido por esse caractere!"+ "    Linha: " + contaLinhas);
                     }
                 } else if (tipoCaractere.equals("quebra-linha")) {
                     contaLinhas++;
@@ -181,8 +174,9 @@ public class ScannerSimbolo {
             strArray = new String[1];
             strArray[0] = "numero";
         } else if (tipo.equals("aspas")) {
-            strArray = new String[1];
+            strArray = new String[2];
             strArray[0] = "op-aritmetico"; // Se for +
+            strArray[1] = "parenteses-fecha";
         } else if (tipo.equals("parenteses-abre")) {
             strArray = new String[4];
             strArray[0] = "letra";
@@ -201,7 +195,7 @@ public class ScannerSimbolo {
         return strArray;
     }
 
-    private boolean checaProximoCaractere(CaractereLidoeEsperado caractereAtual) {
+    private boolean checaProximoCaractere(CaractereLidoeEsperado caractereAtual) throws ExcecaoSintaxeIncorreta {
         int contaGet = 0;
         boolean tipoEsperadoCorreto = false;
         boolean existeEspaço = false;
@@ -227,13 +221,13 @@ public class ScannerSimbolo {
         if (!tipoProxCaractere.equals("quebra-linha")) {
             if (existeEspaço && (caractereAtual.tipoAtual.equals("dois-pontos") || caractereAtual.tipoAtual.equals("ponto") || tipoProxCaractere.equals("letra") || tipoProxCaractere.equals("numero"))) {
                 if (caractereAtual.tipoAtual.equals("dois-pontos") || caractereAtual.tipoAtual.equals("ponto")) {
-                    // Exception sintaxe errada
+                   throw new ExcecaoSintaxeIncorreta("Não deve haver espaço entre dois pontos e igual!" + "    Linha: " + contaLinhas);
                 } else if (caractereAtual.tipoAtual.equals("letra") || caractereAtual.tipoAtual.equals("numero")) {
                     if (tipoProxCaractere.equals("letra")) {
                         caractereAtual.existeEspacoDepois = true;
                         tipoEsperadoCorreto = true;
                     } else if (tipoProxCaractere.equals("numero") && caractereAtual.tipoAtual.equals("numero")) {
-                        //Exception sintaxe errada
+                         throw new ExcecaoSintaxeIncorreta("Não podem haver números soltos no programa sem operador!" + "    Linha: " + contaLinhas);
                     } else {
                         tipoEsperadoCorreto = true;
                     }
