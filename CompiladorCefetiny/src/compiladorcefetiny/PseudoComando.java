@@ -36,11 +36,12 @@ public class PseudoComando {
         return foiPreenchido;
     }
     
-    public void preencheComando(PseudoComando comando){
+    public void preencheComando(PseudoComando comando, List<PseudoComando> pseudoLista){
         if(!foiPreenchido){
             stringComando = comando.getStringComando();
             tipoComando = comando.getTipoComando();
             foiPreenchido = true;
+            
         }else{
             pseudoLista.add(comando);
         }

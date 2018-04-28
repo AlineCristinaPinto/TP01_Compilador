@@ -15,16 +15,20 @@ public class ComandoIf implements Comando{
 
     @Override
     public void execute() {
+        
         Boolean resultIf = Boolean.getBoolean(Expressao.Exp.calcula(expressao));
        
         if(resultIf){
             
-            for (int i = 0; i < listaComandos.getPseudolistaComandos().size(); i++) {
+            for (int i = 0; i < listaComandos.getPseudolistaComandos().size()-1; i++) {
                 listaComandos.getPseudolistaComandos().get(i).execute();
             }
             
+        }else{
+            int ultimoItem = listaComandos.getPseudolistaComandos().size();
+            listaComandos.getPseudolistaComandos().get(ultimoItem);
         }
-        
+                
         
     }
     

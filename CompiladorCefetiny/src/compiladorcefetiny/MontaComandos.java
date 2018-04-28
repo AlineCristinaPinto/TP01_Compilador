@@ -57,6 +57,8 @@ public class MontaComandos {
                 case "for":
                     listaRecebida.preencheLista(For(comando, isInsideCommand));
                     break;
+                case "else":
+                    listaRecebida.preencheLista(Else(comando, isInsideCommand));
             }
         }
     }
@@ -110,7 +112,6 @@ public class MontaComandos {
         return new ComandoReadint(variavel);
     }
 
-    //falta lidar com o else
     private ComandoIf If(PseudoComando comando, Boolean isInsideCommand) {
 
         if (!isInsideCommand) {
@@ -139,6 +140,40 @@ public class MontaComandos {
             }
 
             return new ComandoIf(expressao, listaIfInterno);
+        }
+    }
+    
+    private ComandoIf Else(PseudoComando comando, Boolean isInsideCommand){
+        if (!isInsideCommand) {
+            PseudoListaExecucao listaElse = new PseudoListaExecucao();
+            String expressao = "";
+
+            expressao = comando.getStringComando().substring((comando.getStringComando().indexOf("(") + 1), (comando.getStringComando().length() - 1));
+            
+            expressao = "not(" + expressao + ")";
+            
+            if (comando.isPreenchido()) {
+                for (int i = 0; i < comando.getPseudoLista().size(); i++) {
+                    montaLista(comando.getPseudoLista().get(i), listaElse, true);
+                }
+            }
+            
+            return new ComandoIf(expressao, listaElse);
+        }else{
+            PseudoListaExecucao listaElseInterno = new PseudoListaExecucao();
+            String expressao = "";
+
+            expressao = comando.getStringComando().substring((comando.getStringComando().indexOf("(") + 1), (comando.getStringComando().length() - 1));
+            
+            expressao = "not(" + expressao + ")";
+            
+            if (comando.isPreenchido()) {
+                for (int i = 0; i < comando.getPseudoLista().size(); i++) {
+                    montaLista(comando.getPseudoLista().get(i), listaElseInterno, true);
+                }
+            }
+            
+            return new ComandoIf(expressao, listaElseInterno);
         }
     }
 

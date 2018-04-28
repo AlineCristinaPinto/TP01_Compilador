@@ -1,5 +1,8 @@
 package compiladorcefetiny;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author Aline, Eduardo Cotta, Luiz, Pedro Lucas e Ruan
@@ -20,10 +23,10 @@ public class AnaliseSintaticaComandos {
     }
 
     public void terceiraAnaliseSintatica() {
-        identificaComandos(true);
+        identificaComandos(true, false);
     }
 
-    public PseudoComando identificaComandos(boolean primeiroIdentifica) {
+    public PseudoComando identificaComandos(boolean primeiroIdentifica, boolean isInsideCommand) {
         PseudoComando tempComando = null;
         String palavraLida = "";
         char caractere = input.get();
@@ -37,13 +40,13 @@ public class AnaliseSintaticaComandos {
                 switch (retornoTipo) {
                     case 0:
                         if (palavraLida.equals("endif")) {
-                            tempComando = new PseudoComando(null,"endif","endif",false);
+                            tempComando = new PseudoComando(null, "endif", "endif", false);
                             return tempComando;
                         } else if (palavraLida.equals("endwhile")) {
-                            tempComando = new PseudoComando(null,"endwhile","endwhile",false);
+                            tempComando = new PseudoComando(null, "endwhile", "endwhile", false);
                             return tempComando;
                         } else if (palavraLida.equals("endfor")) {
-                            tempComando = new PseudoComando(null,"endfor","endfor",false);
+                            tempComando = new PseudoComando(null, "endfor", "endfor", false);
                             return tempComando;
                         } else {
                             //Exception palavra inserida em uma expressão incorreta!
@@ -55,62 +58,62 @@ public class AnaliseSintaticaComandos {
                         break;
                     case 2:
                         if (palavraLida.equals("if")) {
-                            tempComando = analiseComandoIf(palavraLida);
-                            if(primeiroIdentifica){
+                            tempComando = analiseComandoIf(palavraLida, isInsideCommand);
+                            if (primeiroIdentifica) {
                                 //monta Comando
-                            }else{
+                            } else {
                                 return tempComando;
                             }
                             palavraLida = "";
                             palavraPreenchida = false;
                         } else if (palavraLida.equals("for")) {
-                            tempComando = analiseComandoFor(palavraLida);
-                            if(primeiroIdentifica){
+                            tempComando = analiseComandoFor(palavraLida, isInsideCommand);
+                            if (primeiroIdentifica) {
                                 //monta Comando
-                            }else{
+                            } else {
                                 return tempComando;
                             }
                             palavraLida = "";
                             palavraPreenchida = false;
                         } else if (palavraLida.equals("while")) {
-                            tempComando = analiseComandoWhile(palavraLida);
-                            if(primeiroIdentifica){
+                            tempComando = analiseComandoWhile(palavraLida, isInsideCommand);
+                            if (primeiroIdentifica) {
                                 //monta Comando
-                            }else{
+                            } else {
                                 return tempComando;
                             }
                             palavraLida = "";
                             palavraPreenchida = false;
                         } else if (palavraLida.equals("print")) {
                             tempComando = analiseComandoPrint(palavraLida);
-                            if(primeiroIdentifica){
+                            if (primeiroIdentifica) {
                                 //monta Comando
-                            }else{
+                            } else {
                                 return tempComando;
                             }
                             palavraLida = "";
                         } else if (palavraLida.equals("println")) {
                             tempComando = analiseComandoPrintln(palavraLida);
-                            if(primeiroIdentifica){
+                            if (primeiroIdentifica) {
                                 //monta Comando
-                            }else{
+                            } else {
                                 return tempComando;
                             }
                             palavraLida = "";
                             palavraPreenchida = false;
                         } else if (palavraLida.equals("readint")) {
                             tempComando = analiseComandoReadint(palavraLida);
-                            if(primeiroIdentifica){
+                            if (primeiroIdentifica) {
                                 //monta Comando
-                            }else{
+                            } else {
                                 return tempComando;
                             }
                             palavraLida = "";
                             palavraPreenchida = false;
                         } else if (palavraLida.equals("end")) {
-                            if(primeiroIdentifica){
+                            if (primeiroIdentifica) {
                                 //fim
-                            }else{
+                            } else {
                                 //Exception
                                 System.out.println("Fim de programa em lugar errrado!");
                             }
@@ -127,7 +130,7 @@ public class AnaliseSintaticaComandos {
                     tempComando = analiseComandoAtribuicao(palavraLida);
                     if (primeiroIdentifica) {
                         //montaComandos.montaLista(tempComando, null, false);
-                    }else{
+                    } else {
                         return tempComando;
                     }
                     palavraLida = "";
@@ -449,11 +452,11 @@ public class AnaliseSintaticaComandos {
                 }
             } else if (tipoCaractere.equals("dois-pontos")) {
                 char proxCaractere = input.get();
-                if(proxCaractere == '='){
+                if (proxCaractere == '=') {
                     //Voltar para última variável
                     isComando = false;
                     break;
-                }else{
+                } else {
                     System.out.println("Erro, sintaxe incorreta2.5");
                 }
             } else {
@@ -530,99 +533,387 @@ public class AnaliseSintaticaComandos {
     private PseudoComando analiseComandoAtribuicao(String palavraLida) {
         String retornoExpressao = analiseExpressao(palavraLida, 0, false);
 
-        
         System.out.println(retornoExpressao);
 
         return null;
     }
 
-    private PseudoComando analiseComandoIf(String palavraLida) {
-        PseudoComando retornoIf;
-        int retornoMaximo=0;
-        //int retornoMaximo =  Método que acha parenteses final
-        
-        String retornoExpressao = analiseExpressao(palavraLida, retornoMaximo, true);
-        
-        palavraLida +='('+ retornoExpressao + ')';
-        
-        retornoIf = new PseudoComando(null, "if", palavraLida, false);
-        
-        PseudoComando tempComando = identificaComandos(false);
-        
-        while(!tempComando.getTipoComando().equals("endif")){
-            retornoIf.preencheComando(tempComando);
-            tempComando = identificaComandos(false);
+    private PseudoComando analiseComandoIf(String palavraLida, Boolean isInsideCommand) {
+
+        if (!isInsideCommand) {
+            int contAbreParenteses = 0;
+            int contFechaParenteses = 0;
+            int contNumeroGet = 0;
+            int tempNumGet = 0;
+            char caractere = input.get();
+            while (caractere != 40) {
+                if (caractere == 32) {
+                    caractere = input.get();
+                } else {
+                    //exception
+                }
+            }
+            while (!(contFechaParenteses > contAbreParenteses)) {
+                contNumeroGet++;
+                caractere = input.get();
+                if (caractere == 40) {
+                    contAbreParenteses++;
+                }
+                if (caractere == 41) {
+                    contFechaParenteses++;
+                }
+            }
+            tempNumGet = contNumeroGet;
+            while (contNumeroGet != 0) {
+                input.unget();
+                contNumeroGet--;
+            }
+            String tempPalavraLida = palavraLida + "(";
+            String expressao = analiseExpressao(tempPalavraLida, (tempNumGet - 1), true);
+            expressao = expressao + input.get();
+            caractere = input.get();
+            while (caractere != 116) {
+                if (caractere == 32) {
+                    caractere = input.get();
+                } else {
+                    //exception
+                }
+            }
+            String palavraReservada = String.valueOf(caractere);
+            for (int i = 0; i < 3; i++) {
+                palavraReservada += input.get();
+            }
+            caractere = input.get();
+            if (!(palavraReservada.equals("then")) && caractere != 32) {
+                //exception
+            }
+
+            List<PseudoComando> pseudoListaIf = new ArrayList<>();
+            PseudoComando tempComando = identificaComandos(false, false);
+
+            while ((!tempComando.getTipoComando().equals("endif")) && (!tempComando.getTipoComando().equals("else"))) {
+                pseudoListaIf.add(tempComando);
+                tempComando = identificaComandos(false, false);
+            }
+
+            if (tempComando.getTipoComando().equals("else")) {
+                List<PseudoComando> pseudoListaElse = new ArrayList<>();
+                tempComando = identificaComandos(false, false);
+                while ((!tempComando.getTipoComando().equals("endif"))) {
+                    pseudoListaElse.add(tempComando);
+                    tempComando = identificaComandos(false, false);
+                }
+                PseudoComando comandoElse = new PseudoComando(pseudoListaElse, "else", expressao, true);
+                pseudoListaIf.add(comandoElse);
+            }
+
+            return new PseudoComando(pseudoListaIf, "if", expressao, true);
+        } else {
+            int contAbreParenteses = 0;
+            int contFechaParenteses = 0;
+            int contNumeroGet = 0;
+            int tempNumGet = 0;
+            char caractere = input.get();
+            while (caractere != 40) {
+                if (caractere == 32) {
+                    caractere = input.get();
+                } else {
+                    //exception
+                }
+            }
+            while (!(contFechaParenteses > contAbreParenteses)) {
+                contNumeroGet++;
+                caractere = input.get();
+                if (caractere == 40) {
+                    contAbreParenteses++;
+                }
+                if (caractere == 41) {
+                    contFechaParenteses++;
+                }
+            }
+            tempNumGet = contNumeroGet;
+            while (contNumeroGet != 0) {
+                input.unget();
+                contNumeroGet--;
+            }
+            String tempPalavraLida = palavraLida + "(";
+            String expressao = analiseExpressao(tempPalavraLida, (tempNumGet - 1), true);
+            expressao = expressao + input.get();
+            caractere = input.get();
+            while (caractere != 116) {
+                if (caractere == 32) {
+                    caractere = input.get();
+                } else {
+                    //exception
+                }
+            }
+            String palavraReservada = String.valueOf(caractere);
+            for (int i = 0; i < 3; i++) {
+                palavraReservada += input.get();
+            }
+            caractere = input.get();
+            if (!(palavraReservada.equals("then")) && caractere != 32) {
+                //exception
+            }
+
+            List<PseudoComando> pseudoListaIfInterna = new ArrayList<>();
+            PseudoComando tempComandoInterno = identificaComandos(false, true);
+
+            while ((!tempComandoInterno.getTipoComando().equals("endif")) && (!tempComandoInterno.getTipoComando().equals("else"))) {
+                pseudoListaIfInterna.add(tempComandoInterno);
+                tempComandoInterno = identificaComandos(false, true);
+            }
+
+            if (tempComandoInterno.getTipoComando().equals("else")) {
+                List<PseudoComando> pseudoListaElseInterna = new ArrayList<>();
+                tempComandoInterno = identificaComandos(false, true);
+                while ((!tempComandoInterno.getTipoComando().equals("endif"))) {
+                    pseudoListaElseInterna.add(tempComandoInterno);
+                    tempComandoInterno = identificaComandos(false, true);
+                }
+                PseudoComando comandoElse = new PseudoComando(pseudoListaElseInterna, "else", expressao, true);
+                pseudoListaIfInterna.add(comandoElse);
+            }
+
+            return new PseudoComando(pseudoListaIfInterna, "if", expressao, true);
         }
-        
-        return retornoIf;
     }
 
-    private PseudoComando analiseComandoFor(String palavraLida) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private PseudoComando analiseComandoFor(String palavraLida, Boolean isInsideCommand) {
+        if(!isInsideCommand){
+            
+        }else{
+            
+        }
+        return null;
     }
 
-    private PseudoComando analiseComandoWhile(String palavraLida) {
+    private PseudoComando analiseComandoWhile(String palavraLida, Boolean isInsideCommand) {
+        if (!isInsideCommand) {
+            int contAbreParenteses = 0;
+            int contFechaParenteses = 0;
+            int contNumeroGet = 0;
+            int tempNumGet = 0;
+            char caractere = input.get();
+            while (caractere != 40) {
+                if (caractere == 32) {
+                    caractere = input.get();
+                } else {
+                    //exception
+                }
+            }
+            while (!(contFechaParenteses > contAbreParenteses)) {
+                contNumeroGet++;
+                caractere = input.get();
+                if (caractere == 40) {
+                    contAbreParenteses++;
+                }
+                if (caractere == 41) {
+                    contFechaParenteses++;
+                }
+            }
+            tempNumGet = contNumeroGet;
+            while (contNumeroGet != 0) {
+                input.unget();
+                contNumeroGet--;
+            }
+            String tempPalavraLida = palavraLida + "(";
+            String expressao = analiseExpressao(tempPalavraLida, (tempNumGet - 1), true);
+            expressao = expressao + input.get();
+
+            caractere = input.get();
+            while (caractere != 100) {
+                if (caractere == 32) {
+                    caractere = input.get();
+                } else {
+                    //exception
+                }
+            }
+            caractere = input.get();
+            if (caractere == 111) {
+                caractere = input.get();
+                if (caractere != 32) {
+                    //exception
+                }
+            } else {
+                //exception
+            }
+            List<PseudoComando> pseudoListaWhile = new ArrayList<>();
+            PseudoComando tempComando = identificaComandos(false, false);
+            while ((!tempComando.getTipoComando().equals("endwhile"))) {
+                pseudoListaWhile.add(tempComando);
+                tempComando = identificaComandos(false, false);
+            }
+            return new PseudoComando(pseudoListaWhile, "while", expressao, true);
+        }else{
+            int contAbreParenteses = 0;
+            int contFechaParenteses = 0;
+            int contNumeroGet = 0;
+            int tempNumGet = 0;
+            char caractere = input.get();
+            while (caractere != 40) {
+                if (caractere == 32) {
+                    caractere = input.get();
+                } else {
+                    //exception
+                }
+            }
+            while (!(contFechaParenteses > contAbreParenteses)) {
+                contNumeroGet++;
+                caractere = input.get();
+                if (caractere == 40) {
+                    contAbreParenteses++;
+                }
+                if (caractere == 41) {
+                    contFechaParenteses++;
+                }
+            }
+            tempNumGet = contNumeroGet;
+            while (contNumeroGet != 0) {
+                input.unget();
+                contNumeroGet--;
+            }
+            String tempPalavraLida = palavraLida + "(";
+            String expressao = analiseExpressao(tempPalavraLida, (tempNumGet - 1), true);
+            expressao = expressao + input.get();
+
+            caractere = input.get();
+            while (caractere != 100) {
+                if (caractere == 32) {
+                    caractere = input.get();
+                } else {
+                    //exception
+                }
+            }
+            caractere = input.get();
+            if (caractere == 111) {
+                caractere = input.get();
+                if (caractere != 32) {
+                    //exception
+                }
+            } else {
+                //exception
+            }
+            List<PseudoComando> pseudoListaWhileInterna = new ArrayList<>();
+            PseudoComando tempComandoInterno = identificaComandos(false, true);
+            while ((!tempComandoInterno.getTipoComando().equals("endwhile"))) {
+                pseudoListaWhileInterna.add(tempComandoInterno);
+                tempComandoInterno = identificaComandos(false, true);
+            }
+            return new PseudoComando(pseudoListaWhileInterna, "while", expressao, true);
+        }
+    }
+
+    private PseudoComando analiseComandoPrint(String palavraLida) {
         int contAbreParenteses = 0;
         int contFechaParenteses = 0;
         int contNumeroGet = 0;
         int tempNumGet = 0;
         char caractere = input.get();
-        while(caractere != 40){
-            if(caractere == 32){
+        while (caractere != 40) {
+            if (caractere == 32) {
                 caractere = input.get();
-            }else{
-                //exception
+            } else {
+                //exception	
             }
         }
-        while(!(contFechaParenteses > contAbreParenteses)){
+        while (!(contFechaParenteses > contAbreParenteses)) {
             contNumeroGet++;
             caractere = input.get();
-            if(caractere == 40){
+            if (caractere == 40) {
                 contAbreParenteses++;
             }
-            if(caractere == 41){
+            if (caractere == 41) {
                 contFechaParenteses++;
             }
         }
         tempNumGet = contNumeroGet;
-        while(contNumeroGet != 0){
+        while (contNumeroGet != 0) {
             input.unget();
             contNumeroGet--;
         }
         String tempPalavraLida = palavraLida + "(";
         String expressao = analiseExpressao(tempPalavraLida, (tempNumGet - 1), true);
         expressao = expressao + input.get();
-        
-        caractere = input.get();
-        while(caractere != 100){
-            if(caractere == 32){
-                caractere = input.get();
-            }
-            else{
-                //exception
-            }
-        }
-        caractere = input.get();
-        if(caractere == 111){
-            caractere = input.get();
-            if(caractere != 32){
-                //exception
-            }
-        }else{
-            //exception
-        }
-    }
+        PseudoComando tempComando = new PseudoComando(null, expressao, "print", false);
 
-    private PseudoComando analiseComandoPrint(String palavraLida) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return tempComando;
     }
 
     private PseudoComando analiseComandoPrintln(String palavraLida) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int contAbreParenteses = 0;
+        int contFechaParenteses = 0;
+        int contNumeroGet = 0;
+        int tempNumGet = 0;
+        char caractere = input.get();
+        while (caractere != 40) {
+            if (caractere == 32) {
+                caractere = input.get();
+            } else {
+                //exception	
+            }
+        }
+        while (!(contFechaParenteses > contAbreParenteses)) {
+            contNumeroGet++;
+            caractere = input.get();
+            if (caractere == 40) {
+                contAbreParenteses++;
+            }
+            if (caractere == 41) {
+                contFechaParenteses++;
+            }
+        }
+        tempNumGet = contNumeroGet;
+        while (contNumeroGet != 0) {
+            input.unget();
+            contNumeroGet--;
+        }
+        String tempPalavraLida = palavraLida + "(";
+        String expressao = analiseExpressao(tempPalavraLida, (tempNumGet - 1), true);
+        expressao = expressao + input.get();
+        PseudoComando tempComando = new PseudoComando(null, expressao, "println", false);
+
+        return tempComando;
     }
 
     private PseudoComando analiseComandoReadint(String palavraLida) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int contAbreParenteses = 0;
+        int contFechaParenteses = 0;
+        int contNumeroGet = 0;
+        int tempNumGet = 0;
+        String variavel = "";
+        char caractere = input.get();
+        while (caractere != 40) {
+            if (caractere == 32) {
+                caractere = input.get();
+            } else {
+                //exception	
+            }
+        }
+        while (!(contFechaParenteses > contAbreParenteses)) {
+            contNumeroGet++;
+            caractere = input.get();
+            if (caractere == 40) {
+                contAbreParenteses++;
+            }
+            if (caractere == 41) {
+                contFechaParenteses++;
+            }
+        }
+        tempNumGet = contNumeroGet;
+        while (contNumeroGet != 0) {
+            input.unget();
+            contNumeroGet--;
+        }
+        while (contNumeroGet != tempNumGet - 1) {
+            variavel += input.get();
+        }
+        validaVariavel(variavel);
+        String stringComando = palavraLida + "(";
+        stringComando += variavel;
+        PseudoComando tempComando = new PseudoComando(null, variavel, "readint", false);
+
+        return tempComando;
     }
 
     private String verificaOperadorUnario() {
