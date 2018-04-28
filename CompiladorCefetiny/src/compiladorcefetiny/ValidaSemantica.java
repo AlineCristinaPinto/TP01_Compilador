@@ -174,7 +174,7 @@ public class ValidaSemantica {
                 expressaoTipos.contains("(n)") || expressaoTipos.contains("(b)") || 
                 expressaoTipos.contains("(s)") || expressaoTipos.contains("n<=n") ||
                 expressaoTipos.contains("n>=n")){
-            System.out.println(expressaoTipos);
+            
             if(expressaoTipos.contains("n+n")){
                 expressaoTipos = expressaoTipos.replace("n+n", "n");
             }else if(expressaoTipos.contains("n-n")){
